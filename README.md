@@ -14,7 +14,7 @@ This script runs on Python3, and calls the `tqdm`, `matplotlib` and `pandas` pac
 You can install this by simply cloning the repository with:
 
 ```
-git clone https://github.com/fsoubelet/Photography_Analyzer.git
+git clone https://github.com/fsoubelet/PhotoCrawl.git
 ```
 
 
@@ -40,4 +40,4 @@ As of right now, the script only manages images in the `jpg` format since `Pillo
 
 Copyright &copy; 2018 Felix Soubelet. [MIT License][license]
 
-[license]: https://github.com/fsoubelet/Photography_Analyzer/blob/master/LICENSE 
+[license]: https://github.com/fsoubelet/PhotoCrawl/blob/master/LICENSE 
