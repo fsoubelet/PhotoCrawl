@@ -50,7 +50,7 @@ def get_exif(file_path: str) -> dict:
 def process_files():
     """Extracts EXIF of all files in provided path and return a Dataframe with that data."""
     rootpath = input("Absolute UNIX path to files location: ")
-    images = glob(rootpath + "**/*.jpg") + glob(rootpath + "**/*.JPG") + glob(rootpath + "**/*.jpeg", recursive=True)
+    images = glob(rootpath + "/**/*.jpg") + glob(rootpath + "/**/*.JPG") + glob(rootpath + "/**/*.jpeg", recursive=True)
     with Pool(16) as pool:
         metadata = pd.DataFrame(
             list(
