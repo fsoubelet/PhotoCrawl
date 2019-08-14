@@ -104,11 +104,14 @@ def plot_shots_per_year(subplot, data):
 
 def plot_insight(data):
     """Combines all the different plots into subplots on the same figure."""
-    _, axes = plt.subplots(nrows=3, ncols=2, figsize=(25, 22))
+    fig, axes = plt.subplots(nrows=3, ncols=2, figsize=(20, 22))
+    fig.suptitle("Your Photography Habits", fontsize=35)
     plot_shots_per_year(axes[0, 0], data)
     plot_shots_per_camera(axes[0, 1], data)
     plot_shots_per_lens(axes[1, 0], data)
     plot_shots_per_focal_length(axes[1, 1], data)
     plot_shots_per_fnumber(axes[2, 0], data)
     plot_shots_per_shutter_speed(axes[2, 1], data)
+    fig.tight_layout()
+    fig.subplots_adjust(top=0.93)
     plt.savefig("insight.jpg", format="jpg", dpi=300)
