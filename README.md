@@ -38,6 +38,16 @@ As of right now, the script only manages images in the `jpg` format since `Pillo
 - [x] Handling subfolders when looking for files.
 - [x] Output all insight in a single plot.
 
+## Output example
+
+Here is an example of what the script outputs:
+
+<p align="center">
+  <a href="https://xkcd.com/1319/">
+    <img src="https://github.com/fsoubelet/PhotoCrawl/blob/master/insight.jpg"/>
+  </a>
+</p>
+
 ## License
 
 Copyright &copy; 2018 Felix Soubelet. [MIT License][license]
