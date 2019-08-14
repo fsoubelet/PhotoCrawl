@@ -26,7 +26,9 @@ Usage is simple and goes as:
 python photo_analyzer.py
 ```
 
-This script will call for you to provide the absolute path to where your images are stored, and output several plots for insight.
+This script will call for you to provide the absolute path to where your images are stored.
+An example for me on macos could be `Users/myusername/path/to/files` (do not include the last `/`).
+Once provided with a path, the script will crawl files, extract exif and output a file named `insight.jpg` with plotted insight.
 
 
 ## TODO
@@ -34,7 +36,7 @@ This script will call for you to provide the absolute path to where your images 
 - [ ] Handling raw files.
 As of right now, the script only manages images in the `jpg` format since `Pillow` does not hangle raw files.
 - [x] Handling subfolders when looking for files.
-
+- [x] Output all insight in a single plot.
 
 ## License
 

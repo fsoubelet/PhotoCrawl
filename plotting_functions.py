@@ -13,88 +13,102 @@ import seaborn as sns
 sns.set_style("whitegrid")
 
 
-def plot_shots_per_camera(data):
-    """Creates a barplot of the number of shots for each camera."""
-    plt.figure(figsize=(20, 15))
-    plt.title("Number of Shots per Camera Model", fontsize=23)
+def plot_shots_per_camera(subplot, data):
+    """Barplot of the number of shots per camera, on the provided subplot."""
     sns.countplot(
         y="Camera",
         hue="Brand",
         palette="pastel",
         data=data,
-        order=data["Camera"].value_counts().index,
+        ax=subplot,
+        order=data.Camera.value_counts().index,
     )
-    plt.tick_params(axis="both", which="major", labelsize=13)
-    plt.xlabel("Number of Shots", fontsize="xx-large")
-    plt.ylabel("Camera Model", fontsize="xx-large")
-    plt.legend(loc="lower right", fontsize=18, title_fontsize=25)
-    plt.savefig("shots_per_camera.png", format="png", dpi=300)
+    subplot.set_title("Number of Shots per Camera Model", fontsize=25)
+    subplot.tick_params(axis="both", which="major", labelsize=13)
+    subplot.set_xlabel("Number of Shots", fontsize=20)
+    subplot.set_ylabel("Camera Model", fontsize=20)
+    subplot.legend(loc="lower right", fontsize=18, title_fontsize=22)
 
 
-def plot_shots_per_fnumber(data):
-    """Barplot of the number of shots for each F number."""
-    plt.figure(figsize=(15, 10))
-    plt.title("Distribution of Apertures", fontsize=23)
-    sns.countplot(x="F_Number", palette="pastel", data=data)
-    plt.tick_params(axis="both", which="major", labelsize=13)
-    plt.xlabel("F Number", fontsize="xx-large")
-    plt.ylabel("Number of Shots", fontsize="xx-large")
-    plt.savefig("shots_per_aperture.png", format="png", dpi=300)
+def plot_shots_per_fnumber(subplot, data):
+    """Barplot of the number of shots per F number, on the provided subplot."""
+    sns.countplot(x="F_Number", palette="pastel", data=data, ax=subplot)
+    subplot.set_title("Distribution of Apertures", fontsize=25)
+    subplot.tick_params(axis="both", which="major", labelsize=13)
+    subplot.tick_params(axis="x", rotation=70)
+    subplot.set_xlabel("F Number", fontsize=20)
+    subplot.set_ylabel("Number of Shots", fontsize=20)
 
 
-def plot_shots_per_focal_length(data):
-    """Creates a barplot of the number of shots for each focal length in 35mm FF equivalent."""
-    plt.figure(figsize=(15, 10))
-    plt.title("Number of shots per Focal Length (FF equivalent)", fontsize=23)
+def plot_shots_per_focal_length(subplot, data):
+    """Barplot of the number of shots per focal length (FF equivalent), on the provided subplot."""
     sns.countplot(
         x="Focal_Range",
         hue="Lens",
-        palette="tab20",
+        palette="pastel",
         data=data,
-        order=data["Focal_Range"].value_counts().index,
+        ax=subplot,
+        order=data.Focal_Range.value_counts().index,
     )
-    plt.tick_params(axis="both", which="major", labelsize=13)
-    plt.xlabel("Focal Length", fontsize="xx-large")
-    plt.ylabel("Number of Shots", fontsize="xx-large")
-    plt.legend(loc="upper center", fontsize=18, title_fontsize=25)
-    plt.savefig("shots_per_focal.png", format="png", dpi=300)
+    subplot.set_title("Number of shots per Focal Length (FF equivalent)", fontsize=25)
+    subplot.tick_params(axis="both", which="major", labelsize=13)
+    subplot.set_xlabel("Focal Length", fontsize=20)
+    subplot.set_ylabel("Number of Shots", fontsize=20)
+    subplot.legend(loc="upper center", fontsize=15, title_fontsize=21)
 
 
-def plot_shots_per_lens(data):
-    """Creates a barplot of the number of shots for each lens used."""
-    plt.figure(figsize=(25, 13))
-    plt.title("Number of Shots per Lens Model", fontsize=23)
+def plot_shots_per_lens(subplot, data):
+    """Barplot of the number of shots per lens used, on the provided subplot."""
     sns.countplot(
-        y="Lens", hue="Brand", palette="pastel", data=data, order=data["Lens"].value_counts().index
+        y="Lens",
+        hue="Brand",
+        palette="pastel",
+        data=data,
+        ax=subplot,
+        order=data.Lens.value_counts().index,
     )
-    plt.tick_params(axis="both", which="major", labelsize=13)
-    plt.xlabel("Number of Shots", fontsize="xx-large")
-    plt.ylabel("Lens Model", fontsize="xx-large")
-    plt.legend(loc="lower right", fontsize=18, title_fontsize=25)
-    plt.savefig("shots_per_lens.png", format="png", dpi=300)
+    subplot.set_title("Number of Shots per Lens Model", fontsize=25)
+    subplot.tick_params(axis="both", which="major", labelsize=13)
+    subplot.set_xlabel("Number of Shots", fontsize=20)
+    subplot.set_ylabel("Lens Model", fontsize=20)
+    subplot.legend(loc="lower right", fontsize=18, title_fontsize=25)
 
 
-def plot_shots_per_shutter_speed(data):
-    """Creates a plot of the number of shots for each shutter speed."""
-    plt.figure(figsize=(15, 10))
-    plt.title("Number of Shots per Shutter Speed", fontsize=23)
-    sns.countplot(x="Shutter_Speed", data=data, order=data.Shutter_Speed.value_counts().index)
-    plt.xticks(rotation=70)
-    plt.tick_params(axis="y", which="major", labelsize=13)
-    plt.xlabel("Shutter Speed", fontsize="xx-large")
-    plt.ylabel("Number of Shots", fontsize="xx-large")
-    plt.savefig("shots_per_shutter_speed.png", format="png", dpi=300)
-
-
-def plot_shots_per_year(data):
-    """Creates a barplot of the number of shots taken each year."""
-    plt.figure(figsize=(20, 15))
-    plt.title("Number of Shots per Year", fontsize=23)
+def plot_shots_per_shutter_speed(subplot, data):
+    """Barplot of the number of shots per shutter speed, on the provided subplot."""
     sns.countplot(
-        y="Year", hue="Brand", palette="pastel", data=data, order=data["Year"].value_counts().index
+        x="Shutter_Speed", data=data, ax=subplot, order=data.Shutter_Speed.value_counts().index
     )
-    plt.tick_params(axis="both", which="major", labelsize=13)
-    plt.xlabel("Number of Shots", fontsize="xx-large")
-    plt.ylabel("Year", fontsize="xx-large")
-    plt.legend(loc="lower right", fontsize=18, title_fontsize=25)
-    plt.savefig("shots_per_year.png", format="png", dpi=300)
+    subplot.set_title("Number of Shots per Shutter Speed", fontsize=25)
+    subplot.tick_params(axis="x", which="major", rotation=70)
+    subplot.set_xlabel("Shutter Speed", fontsize=20)
+    subplot.set_ylabel("Number of Shots", fontsize=20)
+
+
+def plot_shots_per_year(subplot, data):
+    """Barplot of the number of shots taken each year, on the provided subplot."""
+    sns.countplot(
+        y="Year",
+        hue="Brand",
+        palette="pastel",
+        data=data,
+        ax=subplot,
+        order=data.Year.value_counts().index,
+    )
+    subplot.set_title("Number of Shots per Year", fontsize=25)
+    subplot.tick_params(axis="both", which="major", labelsize=13)
+    subplot.set_xlabel("Number of Shots", fontsize=20)
+    subplot.set_ylabel("Year", fontsize=20)
+    subplot.legend(loc="lower right", fontsize=18, title_fontsize=22)
+
+
+def plot_insight(data):
+    """Combines all the different plots into subplots on the same figure."""
+    _, axes = plt.subplots(nrows=3, ncols=2, figsize=(25, 22))
+    plot_shots_per_year(axes[0, 0], data)
+    plot_shots_per_camera(axes[0, 1], data)
+    plot_shots_per_lens(axes[1, 0], data)
+    plot_shots_per_focal_length(axes[1, 1], data)
+    plot_shots_per_fnumber(axes[2, 0], data)
+    plot_shots_per_shutter_speed(axes[2, 1], data)
+    plt.savefig("insight.jpg", format="jpg", dpi=300)

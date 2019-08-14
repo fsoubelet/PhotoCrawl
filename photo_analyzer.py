@@ -6,21 +6,13 @@ A simply script to run analysis and get insight on my use
 of equipment and settings in my practice of photography.
 """
 
-import os
 from glob import glob
 from multiprocessing import Pool
 import pandas as pd
 from PIL import Image
 from PIL import ExifTags
 from tqdm import tqdm
-from plotting_functions import (
-    plot_shots_per_camera,
-    plot_shots_per_fnumber,
-    plot_shots_per_focal_length,
-    plot_shots_per_lens,
-    plot_shots_per_shutter_speed,
-    plot_shots_per_year,
-)
+from plotting_functions import plot_insight
 
 
 INTERESTING_INFO = [
@@ -47,10 +39,14 @@ def get_exif(file_path: str) -> dict:
     return storage
 
 
-def process_files():
+def process_files() -> pd.DataFrame:
     """Extracts EXIF of all files in provided path and return a Dataframe with that data."""
     rootpath = input("Absolute UNIX path to files location: ")
-    images = glob(rootpath + "/**/*.jpg") + glob(rootpath + "/**/*.JPG") + glob(rootpath + "/**/*.jpeg", recursive=True)
+    images = (
+        glob(rootpath + "/**/*.jpg")
+        + glob(rootpath + "/**/*.JPG")
+        + glob(rootpath + "/**/*.jpeg", recursive=True)
+    )
     with Pool(16) as pool:
         metadata = pd.DataFrame(
             list(
@@ -65,7 +61,7 @@ def process_files():
     return metadata
 
 
-def figure_frange(row):
+def figure_frange(row) -> str:
     """
     Categorize the focal length value in different ranges. This is better for plotting
     the number of shots per focal length (focal range).
@@ -87,7 +83,7 @@ def figure_frange(row):
         return "400+mm"
 
 
-def rework_data(exif_dataframe):
+def rework_data(exif_dataframe: pd.DataFrame) -> pd.DataFrame:
     """Formats the Dataframe to have better labels and content."""
     temp_df = exif_dataframe
     temp_df.rename(
@@ -137,21 +133,15 @@ def rework_data(exif_dataframe):
             "XF56mmF1.2 R APD": "XF 56mm f/1.2 R APD",
         }
     )
+    temp_df.dropna(inplace=True)
     return temp_df
 
 
 def main():
-    """Runs the whole process."""
+    """Prompt for path, crawl files, extract exif and plot insight."""
     exif_data = process_files()
     exif_data = rework_data(exif_data)
-    plot_shots_per_fnumber(exif_data)
-    plot_shots_per_camera(exif_data)
-    plot_shots_per_focal_length(exif_data)
-    plot_shots_per_lens(exif_data)
-    plot_shots_per_shutter_speed(exif_data)
-    plot_shots_per_year(exif_data)
-    print("Done!")
-    os.system("open shots_per_year.png shots_per_camera.png shots_per_lens.png shots_per_focal.png shots_per_aperture.png shots_per_shutter_speed.png")
+    plot_insight(exif_data)
 
 
 if __name__ == "__main__":
