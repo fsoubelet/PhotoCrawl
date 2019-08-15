@@ -45,13 +45,13 @@ Here is an example of what the script outputs:
 
 <p align="center">
   <a href="https://xkcd.com/1319/">
-    <img src="https://github.com/fsoubelet/PhotoCrawl/blob/master/insight_1.jpg"/>
+    <img src="https://github.com/fsoubelet/PhotoCrawl/blob/master/outputs/insight_1.jpg"/>
   </a>
 </p>
 
 <p align="center">
   <a href="https://xkcd.com/1319/">
-    <img src="https://github.com/fsoubelet/PhotoCrawl/blob/master/insight_2.jpg"/>
+    <img src="https://github.com/fsoubelet/PhotoCrawl/blob/master/ouotputs/insight_2.jpg"/>
   </a>
 </p>
 
