@@ -10,18 +10,14 @@ settings in my practice of photography.
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+sns.set_palette("pastel")
 sns.set_style("whitegrid")
 
 
 def plot_shots_per_camera(subplot, data):
     """Barplot of the number of shots per camera, on the provided subplot."""
     sns.countplot(
-        y="Camera",
-        hue="Brand",
-        palette="pastel",
-        data=data,
-        ax=subplot,
-        order=data.Camera.value_counts().index,
+        y="Camera", hue="Brand", data=data, ax=subplot, order=data.Camera.value_counts().index
     )
     subplot.set_title("Number of Shots per Camera Model", fontsize=25)
     subplot.tick_params(axis="both", which="major", labelsize=13)
@@ -32,7 +28,7 @@ def plot_shots_per_camera(subplot, data):
 
 def plot_shots_per_fnumber(subplot, data):
     """Barplot of the number of shots per F number, on the provided subplot."""
-    sns.countplot(x="F_Number", palette="pastel", data=data, ax=subplot)
+    sns.countplot(x="F_Number", data=data, ax=subplot)
     subplot.set_title("Distribution of Apertures", fontsize=25)
     subplot.tick_params(axis="both", which="major", labelsize=13)
     subplot.tick_params(axis="x", rotation=70)
@@ -45,7 +41,6 @@ def plot_shots_per_focal_length(subplot, data):
     sns.countplot(
         x="Focal_Range",
         hue="Lens",
-        palette="pastel",
         data=data,
         ax=subplot,
         order=data.Focal_Range.value_counts().index,
@@ -60,12 +55,7 @@ def plot_shots_per_focal_length(subplot, data):
 def plot_shots_per_lens(subplot, data):
     """Barplot of the number of shots per lens used, on the provided subplot."""
     sns.countplot(
-        y="Lens",
-        hue="Brand",
-        palette="pastel",
-        data=data,
-        ax=subplot,
-        order=data.Lens.value_counts().index,
+        y="Lens", hue="Brand", data=data, ax=subplot, order=data.Lens.value_counts().index
     )
     subplot.set_title("Number of Shots per Lens Model", fontsize=25)
     subplot.tick_params(axis="both", which="major", labelsize=13)
@@ -88,12 +78,7 @@ def plot_shots_per_shutter_speed(subplot, data):
 def plot_shots_per_year(subplot, data):
     """Barplot of the number of shots taken each year, on the provided subplot."""
     sns.countplot(
-        y="Year",
-        hue="Brand",
-        palette="pastel",
-        data=data,
-        ax=subplot,
-        order=data.Year.value_counts().index,
+        y="Year", hue="Brand", data=data, ax=subplot, order=data.Year.value_counts().index
     )
     subplot.set_title("Number of Shots per Year", fontsize=25)
     subplot.tick_params(axis="both", which="major", labelsize=13)
@@ -102,10 +87,100 @@ def plot_shots_per_year(subplot, data):
     subplot.legend(loc="lower right", fontsize=18, title_fontsize=22)
 
 
+def plot_shots_per_exposure_program_setting(subplot, data):
+    """Barplot of the number of shots per camera, on the provided subplot."""
+    sns.countplot(
+        x="Exposure_Program",
+        hue=None,
+        palette="pastel",
+        data=data,
+        ax=subplot,
+        order=data.Exposure_Program.value_counts().index,
+    )
+    subplot.set_title("Number of Shots per Exposure Program", fontsize=25)
+    subplot.tick_params(axis="both", which="major", labelsize=13)
+    subplot.set_xlabel("Exposure Program", fontsize=20)
+    subplot.set_ylabel("Number of Shots", fontsize=20)
+
+
+def plot_shots_per_flash_setting(subplot, data):
+    """Barplot of the number of shots with or without flash, on the provided subplot."""
+    sns.countplot(
+        x="Flash",
+        hue=None,
+        palette="pastel",
+        data=data,
+        ax=subplot,
+        order=data.Flash.value_counts().index,
+    )
+    subplot.set_title("Number of Shots with and without Flash", fontsize=25)
+    subplot.tick_params(axis="both", which="major", labelsize=13)
+    subplot.set_xlabel("Flash Usage", fontsize=20)
+    subplot.set_ylabel("Number of Shots", fontsize=20)
+
+
+def plot_shots_per_metering_mode(subplot, data):
+    """Barplot of the number of shots per metering mode, on the provided subplot."""
+    sns.countplot(
+        x="Metering_Mode",
+        hue=None,
+        palette="pastel",
+        data=data,
+        ax=subplot,
+        order=data.Metering_Mode.value_counts().index,
+    )
+    subplot.set_title("Number of Shots per Metering Mode", fontsize=25)
+    subplot.tick_params(axis="both", which="major", labelsize=13)
+    #subplot.tick_params(axis="x", rotation=45)
+    subplot.set_xlabel("Metering Mode", fontsize=20)
+    subplot.set_ylabel("Number of Shots", fontsize=20)
+
+
+def plot_shots_per_white_balance_setting(subplot, data):
+    """Barplot of the number of shots per white balance setting, on the provided subplot."""
+    sns.countplot(
+        y="White_Balance",
+        hue=None,
+        palette="pastel",
+        data=data,
+        ax=subplot,
+        order=data.White_Balance.value_counts().index,
+    )
+    subplot.set_title("Number of Shots per White Balance Setting", fontsize=25)
+    subplot.tick_params(axis="both", which="major", labelsize=13)
+    subplot.set_xlabel("Number of Shots", fontsize=20)
+    subplot.set_ylabel("White Balance", fontsize=20)
+
+
+def plot_shots_per_exposure_compensation_setting(subplot, data):
+    """Barplot of the number of shots per Exposure Compensation setting, on the provided subplot."""
+    sns.countplot(
+        x="Exposure_Compensation",
+        hue=None,
+        palette="pastel",
+        data=data,
+        ax=subplot,
+        #order=data.Exposure_Compensation.value_counts().index,
+    )
+    subplot.set_title("Number of Shots per Exposure Compensation Setting", fontsize=25)
+    subplot.tick_params(axis="both", which="major", labelsize=13)
+    subplot.set_xlabel("Exposure Compensation", fontsize=20)
+    subplot.set_ylabel("Number of Shots", fontsize=20)
+
+
+def plot_shots_per_iso_setting(subplot, data):
+    """Barplot of the number of shots per ISO setting, on the provided subplot."""
+    sns.countplot(x="ISO", hue=None, data=data, ax=subplot, )#order=data.ISO.value_counts().index)
+    subplot.set_title("Number of Shots per Exposure Compensation Setting", fontsize=25)
+    subplot.tick_params(axis="both", which="major", labelsize=13)
+    subplot.set_xlabel("ISO Value", fontsize=20)
+    subplot.set_ylabel("Number of Shots", fontsize=20)
+
+
 def plot_insight(data):
     """Combines all the different plots into subplots on the same figure."""
     fig, axes = plt.subplots(nrows=3, ncols=2, figsize=(20, 22))
-    fig.suptitle("Your Photography Habits", fontsize=35)
+    fig.suptitle("Your Photography Habits - Part 1", fontsize=35)
     plot_shots_per_year(axes[0, 0], data)
     plot_shots_per_camera(axes[0, 1], data)
     plot_shots_per_lens(axes[1, 0], data)
@@ -114,4 +189,16 @@ def plot_insight(data):
     plot_shots_per_shutter_speed(axes[2, 1], data)
     fig.tight_layout()
     fig.subplots_adjust(top=0.93)
-    plt.savefig("insight.jpg", format="jpg", dpi=300)
+    plt.savefig("insight_1.jpg", format="jpg", dpi=300)
+
+    fig, axes = plt.subplots(nrows=3, ncols=2, figsize=(20, 22))
+    fig.suptitle("Your Photography Habits - Part 2", fontsize=35)
+    plot_shots_per_exposure_program_setting(axes[0, 0], data)
+    plot_shots_per_flash_setting(axes[0, 1], data)
+    plot_shots_per_metering_mode(axes[1, 0], data)
+    plot_shots_per_white_balance_setting(axes[1, 1], data)
+    plot_shots_per_exposure_compensation_setting(axes[2, 0], data)
+    plot_shots_per_iso_setting(axes[2, 1], data)
+    fig.tight_layout()
+    fig.subplots_adjust(top=0.93)
+    plt.savefig("insight_2.jpg", format="jpg", dpi=300)

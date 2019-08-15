@@ -7,7 +7,7 @@ A simply script to run analysis and get insight on my use of equipment and setti
 
 ### Prerequisites
 
-This script runs on Python3, and calls the `tqdm`, `matplotlib` and `pandas` packages as requirements.
+This script runs on Python3, and requires the following libraries: `Pillow`, [`PyExifInfo`][pyexifinfo]`tqdm`, `matplotlib`, `seaborn`,  and `pandas`.
 
 ### Install with Git
 
@@ -23,7 +23,7 @@ git clone https://github.com/fsoubelet/PhotoCrawl.git
 Usage is simple and goes as:
 
 ```
-python photo_analyzer.py
+python photo_crawl.py
 ```
 
 This script will call for you to provide the absolute path to where your images are stored.
@@ -33,7 +33,7 @@ Once provided with a path, the script will crawl files, extract exif and output 
 
 ## TODO
 
-- [ ] Handling raw files.
+- [x] Handling raw files.
 As of right now, the script only manages images in the `jpg` format since `Pillow` does not hangle raw files.
 - [x] Handling subfolders when looking for files.
 - [x] Output all insight in a single plot.
@@ -44,12 +44,19 @@ Here is an example of what the script outputs:
 
 <p align="center">
   <a href="https://xkcd.com/1319/">
-    <img src="https://github.com/fsoubelet/PhotoCrawl/blob/master/insight.jpg"/>
+    <img src="https://github.com/fsoubelet/PhotoCrawl/blob/master/insight_1.jpg"/>
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://xkcd.com/1319/">
+    <img src="https://github.com/fsoubelet/PhotoCrawl/blob/master/insight_2.jpg"/>
   </a>
 </p>
 
 ## License
 
-Copyright &copy; 2018 Felix Soubelet. [MIT License][license]
+Copyright &copy; 2019 Felix Soubelet. [MIT License][license]
 
 [license]: https://github.com/fsoubelet/PhotoCrawl/blob/master/LICENSE 
+[pyexifinfo]: https://github.com/guinslym/pyexifinfo
