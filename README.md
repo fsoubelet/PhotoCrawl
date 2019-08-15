@@ -44,15 +44,11 @@ As of right now, the script only manages images in the `jpg` format since `Pillo
 Here is an example of what the script outputs:
 
 <p align="center">
-  <a href="https://xkcd.com/1319/">
-    <img src="https://github.com/fsoubelet/PhotoCrawl/blob/master/outputs/insight_1.jpg"/>
-  </a>
+  <img src="https://github.com/fsoubelet/PhotoCrawl/blob/master/outputs/insight_1.jpg"/>
 </p>
 
 <p align="center">
-  <a href="https://xkcd.com/1319/">
-    <img src="https://github.com/fsoubelet/PhotoCrawl/blob/master/ouotputs/insight_2.jpg"/>
-  </a>
+  <img src="https://github.com/fsoubelet/PhotoCrawl/blob/master/outputs/insight_2.jpg"/>
 </p>
 
 ## License
