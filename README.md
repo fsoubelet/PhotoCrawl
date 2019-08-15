@@ -1,13 +1,14 @@
-# Photography Analyzer
+# PhotoCrawl: A Photography Analyzer
 
-A simply script to run analysis and get insight on my use of equipment and settings in my practice of photography.
+A simple script to run analysis and get insight on my use of equipment and settings in my practice of photography.
 
 
 ## Install
 
 ### Prerequisites
 
-This script runs on Python3, and requires the following libraries: `Pillow`, [`PyExifInfo`][pyexifinfo]`tqdm`, `matplotlib`, `seaborn`,  and `pandas`.
+This script runs on Python3, and requires the following libraries: `Pillow`, [`PyExifInfo`][pyexifinfo], `tqdm`, `matplotlib`, `seaborn`,  and `pandas`.
+It also requires that you have the amazing [ExifTool][exiftool] package by Phil Harvey.
 
 ### Install with Git
 
@@ -27,7 +28,7 @@ python photo_crawl.py
 ```
 
 This script will call for you to provide the absolute path to where your images are stored.
-An example for me on macos could be `Users/myusername/path/to/files` (do not include the last `/`).
+An example for me on macos could be `Users/myusername/path/to/files` (be careful to not include the last `/`).
 Once provided with a path, the script will crawl files, extract exif and output a file named `insight.jpg` with plotted insight.
 
 
@@ -58,5 +59,6 @@ Here is an example of what the script outputs:
 
 Copyright &copy; 2019 Felix Soubelet. [MIT License][license]
 
+[exiftool]: https://www.sno.phy.queensu.ca/~phil/exiftool/
 [license]: https://github.com/fsoubelet/PhotoCrawl/blob/master/LICENSE 
 [pyexifinfo]: https://github.com/guinslym/pyexifinfo
