@@ -189,7 +189,7 @@ def plot_insight(data):
     plot_shots_per_shutter_speed(axes[2, 1], data)
     fig.tight_layout()
     fig.subplots_adjust(top=0.93)
-    plt.savefig("insight_1.jpg", format="jpg", dpi=300)
+    plt.savefig("outputs/insight_1.jpg", format="jpg", dpi=300)
 
     fig, axes = plt.subplots(nrows=3, ncols=2, figsize=(20, 22))
     fig.suptitle("Your Photography Habits - Part 2", fontsize=35)
@@ -201,4 +201,4 @@ def plot_insight(data):
     plot_shots_per_iso_setting(axes[2, 1], data)
     fig.tight_layout()
     fig.subplots_adjust(top=0.93)
-    plt.savefig("insight_2.jpg", format="jpg", dpi=300)
+    plt.savefig("outputs/insight_2.jpg", format="jpg", dpi=300)
