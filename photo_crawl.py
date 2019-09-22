@@ -206,7 +206,7 @@ def main() -> None:
     Prompts for path, crawls files, extracts exif and plots insight.
     :return: nothing.
     """
-    if not Path("outputs"):
+    if not Path("outputs").is_dir():
         Path("outputs").mkdir()
     exif_data = process_files()
     exif_data = rework_data(exif_data)
