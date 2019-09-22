@@ -2,20 +2,25 @@
 Created on 2019.08.13
 :author: Felix Soubelet
 
-A collection of functions that turn useful for
-plotting insight on my use of equipment and
-settings in my practice of photography.
+A collection of functions that turn useful for plotting insight on my use of equipment and settings in my practice of
+photography.
 """
 
 import matplotlib.pyplot as plt
 import seaborn as sns
+import pandas as pd
 
 sns.set_palette("pastel")
 sns.set_style("whitegrid")
 
 
-def plot_shots_per_camera(subplot, data):
-	"""Barplot of the number of shots per camera, on the provided subplot."""
+def plot_shots_per_camera(subplot: plt.axes, data: pd.DataFrame) -> None:
+	"""
+	Barplot of the number of shots per camera, on the provided subplot. Acts in place.
+	:param subplot: the subplot plt.axes on which to plot.
+	:param data: the pandas DataFrame with your exif data.
+	:return: nothing.
+	"""
 	sns.countplot(
 		y="Camera", hue="Brand", data=data, ax=subplot, order=data.Camera.value_counts().index
 	)
@@ -26,8 +31,12 @@ def plot_shots_per_camera(subplot, data):
 	subplot.legend(loc="lower right", fontsize=18, title_fontsize=22)
 
 
-def plot_shots_per_fnumber(subplot, data):
-	"""Barplot of the number of shots per F number, on the provided subplot."""
+def plot_shots_per_fnumber(subplot: plt.axes, data: pd.DataFrame) -> None:
+	"""Barplot of the number of shots per F number, on the provided subplot.
+	:param subplot: the subplot plt.axes on which to plot.
+	:param data: the pandas DataFrame with your exif data.
+	:return: nothing.
+	"""
 	sns.countplot(x="F_Number", data=data, ax=subplot)
 	subplot.set_title("Distribution of Apertures", fontsize=25)
 	subplot.tick_params(axis="both", which="major", labelsize=13)
@@ -36,8 +45,12 @@ def plot_shots_per_fnumber(subplot, data):
 	subplot.set_ylabel("Number of Shots", fontsize=20)
 
 
-def plot_shots_per_focal_length(subplot, data):
-	"""Barplot of the number of shots per focal length (FF equivalent), on the provided subplot."""
+def plot_shots_per_focal_length(subplot: plt.axes, data: pd.DataFrame) -> None:
+	"""Barplot of the number of shots per focal length (FF equivalent), on the provided subplot.
+	:param subplot: the subplot plt.axes on which to plot.
+	:param data: the pandas DataFrame with your exif data.
+	:return: nothing.
+	"""
 	sns.countplot(
 		x="Focal_Range",
 		hue="Lens",
@@ -52,8 +65,12 @@ def plot_shots_per_focal_length(subplot, data):
 	subplot.legend(loc="upper center", fontsize=15, title_fontsize=21)
 
 
-def plot_shots_per_lens(subplot, data):
-	"""Barplot of the number of shots per lens used, on the provided subplot."""
+def plot_shots_per_lens(subplot: plt.axes, data: pd.DataFrame) -> None:
+	"""Barplot of the number of shots per lens used, on the provided subplot.
+	:param subplot: the subplot plt.axes on which to plot.
+	:param data: the pandas DataFrame with your exif data.
+	:return: nothing.
+	"""
 	sns.countplot(
 		y="Lens", hue="Brand", data=data, ax=subplot, order=data.Lens.value_counts().index
 	)
@@ -64,8 +81,12 @@ def plot_shots_per_lens(subplot, data):
 	subplot.legend(loc="lower right", fontsize=18, title_fontsize=25)
 
 
-def plot_shots_per_shutter_speed(subplot, data):
-	"""Barplot of the number of shots per shutter speed, on the provided subplot."""
+def plot_shots_per_shutter_speed(subplot: plt.axes, data: pd.DataFrame) -> None:
+	"""Barplot of the number of shots per shutter speed, on the provided subplot.
+	:param subplot: the subplot plt.axes on which to plot.
+	:param data: the pandas DataFrame with your exif data.
+	:return: nothing.
+	"""
 	sns.countplot(
 		x="Shutter_Speed", data=data, ax=subplot, order=data.Shutter_Speed.value_counts().index
 	)
@@ -75,8 +96,12 @@ def plot_shots_per_shutter_speed(subplot, data):
 	subplot.set_ylabel("Number of Shots", fontsize=20)
 
 
-def plot_shots_per_year(subplot, data):
-	"""Barplot of the number of shots taken each year, on the provided subplot."""
+def plot_shots_per_year(subplot: plt.axes, data: pd.DataFrame) -> None:
+	"""Barplot of the number of shots taken each year, on the provided subplot.
+	:param subplot: the subplot plt.axes on which to plot.
+	:param data: the pandas DataFrame with your exif data.
+	:return: nothing.
+	"""
 	sns.countplot(
 		y="Year", hue="Brand", data=data, ax=subplot, order=data.Year.value_counts().index
 	)
@@ -87,8 +112,12 @@ def plot_shots_per_year(subplot, data):
 	subplot.legend(loc="lower right", fontsize=18, title_fontsize=22)
 
 
-def plot_shots_per_exposure_program_setting(subplot, data):
-	"""Barplot of the number of shots per camera, on the provided subplot."""
+def plot_shots_per_exposure_program_setting(subplot: plt.axes, data: pd.DataFrame) -> None:
+	"""Barplot of the number of shots per camera, on the provided subplot.
+	:param subplot: the subplot plt.axes on which to plot.
+	:param data: the pandas DataFrame with your exif data.
+	:return: nothing.
+	"""
 	sns.countplot(
 		x="Exposure_Program",
 		hue=None,
@@ -103,8 +132,12 @@ def plot_shots_per_exposure_program_setting(subplot, data):
 	subplot.set_ylabel("Number of Shots", fontsize=20)
 
 
-def plot_shots_per_flash_setting(subplot, data):
-	"""Barplot of the number of shots with or without flash, on the provided subplot."""
+def plot_shots_per_flash_setting(subplot: plt.axes, data: pd.DataFrame) -> None:
+	"""Barplot of the number of shots with or without flash, on the provided subplot.
+	:param subplot: the subplot plt.axes on which to plot.
+	:param data: the pandas DataFrame with your exif data.
+	:return: nothing.
+	"""
 	sns.countplot(
 		x="Flash",
 		hue=None,
@@ -119,8 +152,12 @@ def plot_shots_per_flash_setting(subplot, data):
 	subplot.set_ylabel("Number of Shots", fontsize=20)
 
 
-def plot_shots_per_metering_mode(subplot, data):
-	"""Barplot of the number of shots per metering mode, on the provided subplot."""
+def plot_shots_per_metering_mode(subplot: plt.axes, data: pd.DataFrame) -> None:
+	"""Barplot of the number of shots per metering mode, on the provided subplot.
+	:param subplot: the subplot plt.axes on which to plot.
+	:param data: the pandas DataFrame with your exif data.
+	:return: nothing.
+	"""
 	sns.countplot(
 		x="Metering_Mode",
 		hue=None,
@@ -136,8 +173,12 @@ def plot_shots_per_metering_mode(subplot, data):
 	subplot.set_ylabel("Number of Shots", fontsize=20)
 
 
-def plot_shots_per_white_balance_setting(subplot, data):
-	"""Barplot of the number of shots per white balance setting, on the provided subplot."""
+def plot_shots_per_white_balance_setting(subplot: plt.axes, data: pd.DataFrame) -> None:
+	"""Barplot of the number of shots per white balance setting, on the provided subplot.
+	:param subplot: the subplot plt.axes on which to plot.
+	:param data: the pandas DataFrame with your exif data.
+	:return: nothing.
+	"""
 	sns.countplot(
 		y="White_Balance",
 		hue=None,
@@ -152,8 +193,12 @@ def plot_shots_per_white_balance_setting(subplot, data):
 	subplot.set_ylabel("White Balance", fontsize=20)
 
 
-def plot_shots_per_exposure_compensation_setting(subplot, data):
-	"""Barplot of the number of shots per Exposure Compensation setting, on the provided subplot."""
+def plot_shots_per_exposure_compensation_setting(subplot: plt.axes, data: pd.DataFrame) -> None:
+	"""Barplot of the number of shots per Exposure Compensation setting, on the provided subplot.
+	:param subplot: the subplot plt.axes on which to plot.
+	:param data: the pandas DataFrame with your exif data.
+	:return: nothing.
+	"""
 	sns.countplot(
 		x="Exposure_Compensation",
 		hue=None,
@@ -168,8 +213,12 @@ def plot_shots_per_exposure_compensation_setting(subplot, data):
 	subplot.set_ylabel("Number of Shots", fontsize=20)
 
 
-def plot_shots_per_iso_setting(subplot, data):
-	"""Barplot of the number of shots per ISO setting, on the provided subplot."""
+def plot_shots_per_iso_setting(subplot: plt.axes, data: pd.DataFrame) -> None:
+	"""Barplot of the number of shots per ISO setting, on the provided subplot.
+	:param subplot: the subplot plt.axes on which to plot.
+	:param data: the pandas DataFrame with your exif data.
+	:return: nothing.
+	"""
 	sns.countplot(x="ISO", hue=None, data=data, ax=subplot, )  # order=data.ISO.value_counts().index)
 	subplot.set_title("Number of Shots per Exposure Compensation Setting", fontsize=25)
 	subplot.tick_params(axis="both", which="major", labelsize=13)
@@ -177,8 +226,12 @@ def plot_shots_per_iso_setting(subplot, data):
 	subplot.set_ylabel("Number of Shots", fontsize=20)
 
 
-def plot_insight(data):
-	"""Combines all the different plots into subplots on the same figure."""
+def plot_insight(data: pd.DataFrame) -> None:
+	"""
+	Combines all the different plots into subplots on two figure.
+	:param data: the pandas DataFrame with your exif data.
+	:return: nothing.
+	"""
 	fig, axes = plt.subplots(nrows=3, ncols=2, figsize=(20, 22))
 	fig.suptitle("Your Photography Habits - Part 1", fontsize=35)
 	plot_shots_per_year(axes[0, 0], data)

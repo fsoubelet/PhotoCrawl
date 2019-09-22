@@ -2,19 +2,19 @@
 Created on 2019.08.15
 :author: Felix Soubelet
 
-A simply script to run analysis and get insight on my use
-of equipment and settings in my practice of photography.
+A simply script to run analysis and get insight on my use of equipment and settings in my practice of photography.
 """
 
 import pyexifinfo as pyexif
 import pandas as pd
-from glob import glob
+from pathlib import Path
 from multiprocessing import Pool, cpu_count
 from tqdm import tqdm
 from plotting_functions import plot_insight
 
 RAW_FORMATS: dict = {
-    "jpg": "The classic jpg file format",
+    "JPG": "The classic jpg file format",
+    "JPEG": "Also the jpg file format",
     "3FR": "Hasselblad 3F RAW Image",
     "ARI": "ARRIRAW Image",
     "ARW": "Sony Digital Camera Image",
@@ -71,18 +71,26 @@ INTERESTING_FEATURES: list = [
 
 
 def get_exif(file_path: str) -> dict:
-    """Returns a dict with interesting features from image EXIF."""
+    """
+    Returns a dict with interesting features from image EXIF.
+    :param file_path: Absolute path to the file location.
+    :return: a dictionary with the exif fields and value for the specific file.
+    """
     return {key[5:]: value for key, value in pyexif.get_json(file_path)[0].items() if key[5:] in INTERESTING_FEATURES}
 
 
 def process_files() -> pd.DataFrame:
-    rootpath = input("Absolute UNIX path to files location: ")
-    images = (
-        glob(rootpath + f"/*.jpg", recursive=True)
-        + glob(rootpath + "/**/*.jpg", recursive=True)
-        + glob(rootpath + "/**/*.JPG", recursive=True)
-        + glob(rootpath + "/**/*.jpeg", recursive=True)
-    )
+    """
+    Asks for the UNIX absolute path of the top directory where files are stored. Files can be stored in
+    subdirectories, those will then be crawled recursively.
+    :return: a pandas DataFrame with all interesting exif info extracted from all files.
+    """
+    rootpath = input("Absolute UNIX path to top directory of files location: ")
+    images = []
+    for extension in RAW_FORMATS.keys():
+        images.extend(Path(rootpath).glob(f"**/*.{extension}"))
+        images.extend(Path(rootpath).glob(f"**/*.{extension.lower()}"))
+    images = sorted([str(result) for result in images])
     with Pool(cpu_count()) as pool:
         metadata = pd.DataFrame(
             list(tqdm(pool.imap_unordered(get_exif, images), desc="Scraping Images", total=len(images), unit=" Files"))
@@ -90,11 +98,12 @@ def process_files() -> pd.DataFrame:
         return metadata
 
 
-def figure_focal_range(row) -> str:
+def figure_focal_range(row: pd.Series) -> str:
     """
-    Categorize the focal length value in different ranges. This is better for plotting
-    the number of shots per focal length (focal range).
-    To be applied as a lambda on a row.
+    Categorize the focal length value in different ranges. This is better for plotting the number of shots per focal
+    length (focal range). To be applied as a lambda on a column of your DataFrame.
+    :param row: a pandas Series type, should be a column of your DataFrame.
+    :return:
     """
     if row["Focal_Length"] < 10:
         return "1-9mm"
@@ -109,11 +118,15 @@ def figure_focal_range(row) -> str:
     if 200 <= row["Focal_Length"] < 400:
         return "200-400mm"
     if row["Focal_Length"] > 400:
-        return "400+mm"
+        return "400mm+"
 
 
 def rework_data(exif_dataframe: pd.DataFrame) -> pd.DataFrame:
-    """Formats the Dataframe to have better labels and content."""
+    """
+    Formats a Dataframe with better labels and content from original. Does NOT act on the original.
+    :param exif_dataframe: your pandas DataFrame containing exif information of all files.
+    :return: a reworked pandas DataFrame.
+    """
     temp_df = exif_dataframe.copy()
     temp_df.rename(
         {
@@ -159,13 +172,14 @@ def rework_data(exif_dataframe: pd.DataFrame) -> pd.DataFrame:
     ]:
         temp_df.loc[:, col] = temp_df.loc[:, col].astype("category")
 
-    # Clarify some labels. Shouldn't stay here too long as I can't cover all lenses anyway.
+    # Clarify some labels.
     temp_df.Lens = temp_df.Lens.cat.remove_unused_categories()
     temp_df["Metering_Mode"] = (
         temp_df["Metering_Mode"]
         .map({"Center-weighted average": "Center Weighted", "Multi-segment": "Multi Segment"})
         .fillna(temp_df["Metering_Mode"])
     )
+    # Can't cover all lenses, probably unnecessary.
     temp_df["Lens"] = (
         temp_df["Lens"]
         .map(
@@ -187,8 +201,13 @@ def rework_data(exif_dataframe: pd.DataFrame) -> pd.DataFrame:
     return temp_df
 
 
-def main():
-    """Prompt for path, crawl files, extract exif and plot insight."""
+def main() -> None:
+    """
+    Prompts for path, crawls files, extracts exif and plots insight.
+    :return: nothing.
+    """
+    if not Path("outputs"):
+        Path("outputs").mkdir()
     exif_data = process_files()
     exif_data = rework_data(exif_data)
     plot_insight(exif_data)

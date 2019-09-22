@@ -28,14 +28,13 @@ python photo_crawl.py
 ```
 
 This script will call for you to provide the absolute path to where your images are stored.
-An example for me on macos could be `Users/myusername/path/to/files` (be careful to not include the last `/`).
-Once provided with a path, the script will crawl files, extract exif and output a file named `insight.jpg` with plotted insight.
+An example for me on macOS could be `/Users/myusername/path/to/files/`.
+Once provided with a path, the script will crawl files, extract exif and output two files named `insight_1.jpg` and `insight_2.jpg` in the `outputs` folder, with plotted insight.
 
 
 ## TODO
 
 - [x] Handling raw files.
-As of right now, the script only manages images in the `jpg` format since `Pillow` does not hangle raw files.
 - [x] Handling subfolders when looking for files.
 - [x] Output all insight in a single plot.
 
