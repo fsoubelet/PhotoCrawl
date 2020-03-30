@@ -2,7 +2,6 @@
 
 A simple script to run analysis and get insight on my use of equipment and settings in my practice of photography.
 
-
 ## Install
 
 ### Prerequisites
@@ -35,14 +34,6 @@ python -m photocrawl -i files_location
 
 The script will crawl files, extract exif and output visualizations named `insight_1.jpg` and `insight_2.jpg` in a newly created `outputs` folder.
 
-
-## TODO
-
-- [x] Handling raw files.
-- [x] Handling subfolders when looking for files.
-- [x] Output all insight in a single/two plot.
-- [x] Make into a package
-
 ## Output example
 
 Here is an example of what the script outputs:
@@ -54,6 +45,13 @@ Here is an example of what the script outputs:
 <p align="center">
   <img src="https://github.com/fsoubelet/PhotoCrawl/blob/master/example_outputs/insight_2.jpg"/>
 </p>
+
+## TODO
+
+- [x] Handling raw files.
+- [x] Handling subfolders when looking for files.
+- [x] Output all insight in a single/two plot.
+- [x] Make into a package
 
 ## License
 
