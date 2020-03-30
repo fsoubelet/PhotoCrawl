@@ -11,10 +11,10 @@ from multiprocessing import Pool, cpu_count
 
 import pandas as pd
 import pyexifinfo as pyexif
-
 from fsbox import logging_tools
 from fsbox.contexts import timeit
-from plotting_functions import plot_insight
+
+from photocrawl.plotting_functions import plot_insight
 
 LEVELS_DICT: dict = {
     "debug": logging_tools.DEBUG,
@@ -205,7 +205,7 @@ class PhotoCrawler:
         return working_df.dropna()
 
 
-def main() -> None:
+def crawl() -> None:
     """
     Gets location from commandline arguments, crawls relevant files and performs analysis.
     Will plot and save figures.
@@ -214,14 +214,14 @@ def main() -> None:
         Nothing.
     """
     _set_logger_level()
-    output_directory: pathlib.Path = _setup_output_directory("photo_crawl_plots")
+    output_directory: pathlib.Path = _setup_output_directory("example_outputs")
     files_location = pathlib.Path(_parse_args()[0])
 
     crawler = PhotoCrawler(files_location)
     exif_data_df = crawler.process_files()
     exif_data_df = crawler.refactor_exif_data(exif_data_df)
 
-    # plot_insight(exif_data_df, output_directory)
+    plot_insight(exif_data_df, output_directory)
 
 
 # ==================================================================================================================== #
@@ -313,4 +313,4 @@ def _setup_output_directory(directory_name: str) -> pathlib:
 
 
 if __name__ == "__main__":
-    main()
+    crawl()
