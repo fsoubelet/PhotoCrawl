@@ -11,8 +11,6 @@ in their practice of photography.
 
 # Set default logging handler to avoid "No handler found" warnings.
 
-from .photocrawl import crawl
-
 __title__ = "photocrawl"
 __description__ = "Analysis script of photography habits."
 __url__ = "https://github.com/fsoubelet/PhotoCrawl"
@@ -21,4 +19,4 @@ __author__ = "Felix Soubelet"
 __author_email__ = "felix.soubelet@cern.ch"
 __license__ = "MIT"
 
-__all__ = [crawl]
+__all__ = []
