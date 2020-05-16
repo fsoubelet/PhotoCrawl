@@ -6,8 +6,8 @@ A simple script to run analysis and get insight on my use of equipment and setti
 
 ### Prerequisites
 
-This script runs on Python3.6+, and requires the following libraries: [`PyExifInfo`][pyexifinfo], `matplotlib`, `seaborn`,  and `pandas`.
-It also requires that you have the amazing [ExifTool][exiftool] package by Phil Harvey.
+This script runs on Python3.6.1+, and requires the following libraries: [`PyExifInfo`][pyexifinfo], `matplotlib`, `seaborn`, `pandas` and `loguru`.
+Most importantly, it also requires that you have the amazing [ExifTool][exiftool] package by Phil Harvey.
 
 ### Install
 
@@ -17,22 +17,39 @@ If for some reason you have a need for it, you can simply install it in your vir
 pip install photocrawl
 ```
 
-You can also clone this repository through VCS, and install it into a virtual environment.
-With `git`, this would be:
-```bash
-git clone https://github.com/fsoubelet/PyhDToolkit.git
-cd PhotoCrawl
-make
-```
-
 ## Usage
 
 With this package is installed in the activated enrivonment, usage is:
-````bash
+```bash
 python -m photocrawl -i files_location
-````
+```
 
-The script will crawl files, extract exif and output visualizations named `insight_1.jpg` and `insight_2.jpg` in a newly created `outputs` folder.
+Detailed options go as follows:
+```bash
+usage: __main__.py [-h] -i IMAGES_LOCATION [-o OUTPUT_DIR]
+                   [--show-figures SHOW_FIGURES] [--save-figures SAVE_FIGURES]
+                   [-l LOG_LEVEL]
+
+Python 3.6+ utility to get insight on your photography practice.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -i IMAGES_LOCATION, --images IMAGES_LOCATION
+                        Location, either relative or absolute, of the
+                        directory with images you wish to crawl
+  -o OUTPUT_DIR, --output OUTPUT_DIR
+                        Location, either relative or absolute, of the output
+                        directory.Defaults to 'outputs'
+  --show-figures SHOW_FIGURES
+                        Whether or not to show figures when plotting insights.
+  --save-figures SAVE_FIGURES
+                        Whether or not to save figures when plotting insights.
+  -l LOG_LEVEL, --logs LOG_LEVEL
+                        The base console logging level. Can be 'debug',
+                        'info', 'warning' and 'error'.Defaults to 'info'.
+```
+
+The script will crawl files, extract exif and output visualizations named `insight_1.png` and `insight_2.png` in a newly created `outputs` folder (or a folder named as you specified).
 
 ## Output example
 
@@ -51,7 +68,9 @@ Here is an example of what the script outputs:
 - [x] Handling raw files.
 - [x] Handling subfolders when looking for files.
 - [x] Output all insight in a single/two plot.
+- [x] Implement proper logging.
 - [x] Make into a package
+- [x] Make callable as a python module (`python -m photocrawl ...`)
 
 ## License
 
