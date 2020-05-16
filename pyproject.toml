@@ -1,9 +1,27 @@
 [tool.poetry]
 name = "photocrawl"
-version = "0.2.0"
+version = "0.2.1"
 description = "Analysis script of photography habits."
 authors = ["Felix Soubelet <felix.soubelet@liverpool.ac.uk>"]
 license = "MIT"
+
+readme = "README.md"
+repository = "https://github.com/fsoubelet/PhotoCrawl"
+
+keywords = ["Photography", "Utility", "Visualisation"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Topic :: Scientific/Engineering :: Visualization",
+    "Topic :: Utilities",
+]
 
 [tool.poetry.dependencies]
 python = "^3.6.1"
