@@ -27,6 +27,10 @@ def plot_shots_per_camera(subplot: matplotlib.axes.Axes, data: pd.DataFrame) -> 
 
     Returns:
         Nothing, plots in place.
+
+    ??? warning "There is a danger here"
+        Here is an explanation of the danger.
+        Here is how to bypass it :)
     """
     logger.debug("Plotting shots per camera")
     sns.countplot(

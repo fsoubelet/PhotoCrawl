@@ -6,11 +6,7 @@ A simply script to run analysis and get insight on my use of equipment and setti
 practice of photography.
 """
 
-import argparse
 import pathlib
-import sys
-import time
-from contextlib import contextmanager
 from multiprocessing import Pool, cpu_count
 
 import pandas as pd
@@ -18,6 +14,13 @@ import pyexifinfo as pyexif
 from loguru import logger
 
 from photocrawl.plotting_functions import plot_insight
+from photocrawl.utils import (
+    figure_focal_range,
+    parse_arguments,
+    set_logger_level,
+    setup_output_directory,
+    timeit,
+)
 
 
 class PhotoCrawler:
@@ -153,7 +156,7 @@ class PhotoCrawler:
         crawled_images: list = []
         with timeit(
             lambda spanned: logger.info(
-                f"Crawled and found relevant files ({len(crawled_images)}) in {spanned:.4f} seconds"
+                f"Crawled and found {len(crawled_images)} relevant files in {spanned:.4f} seconds"
             )
         ):
             for extension in self.raw_formats.keys():
@@ -190,7 +193,7 @@ class PhotoCrawler:
 
             logger.debug("Extrapolating focal ranges.")
             working_df["Focal_Length"] = working_df["Focal_Length"].apply(lambda x: int(str(x[:3])))
-            working_df["Focal_Range"] = working_df["Focal_Length"].apply(_figure_focal_range)
+            working_df["Focal_Range"] = working_df["Focal_Length"].apply(figure_focal_range)
 
             logger.debug("Making data categorical.")
             for column in self.categorical_columns:
@@ -221,10 +224,10 @@ def crawl() -> None:
     Returns:
         Nothing.
     """
-    command_line_args = _parse_arguments()
-    _set_logger_level(command_line_args.log_level)
+    command_line_args = parse_arguments()
+    set_logger_level(command_line_args.log_level)
 
-    output_directory: pathlib.Path = _setup_output_directory(command_line_args.output_dir)
+    output_directory: pathlib.Path = setup_output_directory(command_line_args.output_dir)
     files_location = pathlib.Path(command_line_args.images_location)
 
     crawler = PhotoCrawler(files_location)
@@ -237,156 +240,6 @@ def crawl() -> None:
         showfig=command_line_args.show_figures,
         savefig=command_line_args.save_figures,
     )
-
-
-@contextmanager
-def timeit(function: callable) -> None:
-    """
-    Returns the time elapsed when executing code in the context via `function`.
-    Original code from @jaimecp89
-
-    Args:
-        function: any callable taking one argument. Was conceived with a lambda in mind.
-
-    Returns:
-        The elapsed time as an argument for the provided function.
-
-    Usage:
-        with timeit(lambda spanned: logger.debug(f'Did some stuff in {spanned} seconds')):
-            some_stuff()
-            some_other_stuff()
-    """
-    start_time = time.time()
-    try:
-        yield
-    finally:
-        time_used = time.time() - start_time
-        function(time_used)
-
-
-# ================================================================================================ #
-
-
-def _figure_focal_range(focal_length: float) -> str:
-    """
-    Categorize the focal length value in different ranges. This is better for plotting the
-    number of shots per focal length (focal range). To be applied as a lambda on a column
-    of your DataFrame.
-
-    Args:
-        focal_length: integer or float value of the focal length used for a shot.
-
-    Returns:
-        A String for each value, corresponding to the focal range,
-    """
-    if focal_length <= 0:
-        logger.error("Focal length should never be a negative value")
-        raise ValueError("Invalid focal length value (< 0)")
-    elif focal_length < 16:
-        return "1-15mm"
-    elif 16 <= focal_length < 23:
-        return "16-23mm"
-    elif 23 <= focal_length < 70:
-        return "24-70mm"
-    elif 70 <= focal_length < 200:
-        return "70-200mm"
-    elif 200 <= focal_length < 400:
-        return "200-400mm"
-    else:
-        return "400mm+"
-
-
-def _parse_arguments() -> tuple:
-    """
-    Simple argument parser to make life easier in the command-line.
-    """
-    parser = argparse.ArgumentParser(description="Python 3.6.1+ utility to get insight on your "
-                                                 "photography practice.")
-    parser.add_argument(
-        "-i",
-        "--images",
-        dest="images_location",
-        default=None,
-        type=str,
-        required=True,
-        help="Location, either relative or absolute, of the directory with images you wish to "
-             "crawl",
-    )
-    parser.add_argument(
-        "-o",
-        "--output",
-        dest="output_dir",
-        default="outputs",
-        type=str,
-        help="Location, either relative or absolute, of the output directory."
-             "Defaults to 'outputs'"
-    )
-    parser.add_argument(
-        "--show-figures",
-        dest="show_figures",
-        default=False,
-        type=bool,
-        help="Whether or not to show figures when plotting insights.",
-    )
-    parser.add_argument(
-        "--save-figures",
-        dest="save_figures",
-        default=True,
-        type=bool,
-        help="Whether or not to save figures when plotting insights.",
-    )
-    parser.add_argument(
-        "-l",
-        "--logs",
-        dest="log_level",
-        default="info",
-        type=str,
-        help="The base console logging level. Can be 'debug', 'info', 'warning' and 'error'."
-        "Defaults to 'info'.",
-    )
-    return parser.parse_args()
-
-
-def _set_logger_level(log_level: str = "info") -> None:
-    """
-    Sets the logger level to the one provided at the commandline.
-
-    Default loguru handler will have DEBUG level and ID 0.
-    We need to first remove this default handler and add ours with the wanted level.
-
-    Args:
-        log_level: string, the default logging level to print out.
-
-    Returns:
-        Nothing, acts in place.
-    """
-    logger.remove(0)
-    logger.add(sys.stderr, level=log_level.upper())
-
-
-def _setup_output_directory(directory_name: str) -> pathlib.Path:
-    """
-    Create an output directory with the provided name.
-
-    Args:
-        directory_name: A string with the name to give to the output directory.
-
-    Returns:
-        A `pathlib.Path` object of this directory.
-    """
-    directory = pathlib.Path(directory_name)
-    if not directory.is_dir():
-        logger.info(f"Creating output directory {directory.absolute()}")
-        directory.mkdir()
-    else:
-        logger.warning(
-            f"Output directory {directory} already present. "
-            "This may lead to unexpected behaviour."
-        )
-    return directory
-
-
-# ================================================================================================ #
 
 
 if __name__ == "__main__":
