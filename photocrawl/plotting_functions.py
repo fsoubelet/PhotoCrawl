@@ -304,7 +304,7 @@ def plot_shots_per_iso_setting(subplot: matplotlib.axes.Axes, data: pd.DataFrame
     """
     logger.debug("Plotting shots per ISO")
     sns.countplot(x="ISO", hue=None, data=data, ax=subplot)  # order=data.ISO.value_counts().index)
-    subplot.set_title("Number of Shots per Exposure Compensation Setting", fontsize=25)
+    subplot.set_title("Number of Shots per ISO Setting", fontsize=25)
     subplot.tick_params(axis="both", which="major", labelsize=13)
     subplot.set_xlabel("ISO Value", fontsize=20)
     subplot.set_ylabel("Number of Shots", fontsize=20)
@@ -326,6 +326,7 @@ def plot_insight(
         Nothing, plots in place.
     """
     logger.info("Plotting first insights figure")
+
     fig, axes = plt.subplots(nrows=3, ncols=2, figsize=(20, 22))
     fig.suptitle("Your Photography Habits - Part 1", fontsize=35)
     plot_shots_per_year(axes[0, 0], data)
@@ -336,15 +337,18 @@ def plot_insight(
     plot_shots_per_shutter_speed(axes[2, 1], data)
     fig.tight_layout()
     fig.subplots_adjust(top=0.93)
+
     if showfig:
         logger.debug("Showing first insight figure.")
         plt.show()
+
     if savefig:
         logger.debug(f"Saving first insights figure as {output_directory}/insight_1.png")
         plt.savefig(f"{output_directory}/insight_1.jpg", format="jpg", dpi=500)
         logger.success(f"Saved as {output_directory}/insight_1.jpg")
 
     logger.info("Plotting second insights figure")
+
     fig, axes = plt.subplots(nrows=3, ncols=2, figsize=(20, 22))
     fig.suptitle("Your Photography Habits - Part 2", fontsize=35)
     plot_shots_per_exposure_program_setting(axes[0, 0], data)
@@ -355,9 +359,11 @@ def plot_insight(
     plot_shots_per_iso_setting(axes[2, 1], data)
     fig.tight_layout()
     fig.subplots_adjust(top=0.93)
+
     if showfig:
         logger.debug("Showing second insight figure.")
         plt.show()
+
     if savefig:
         logger.debug(f"Saving second insights figure as {output_directory}/insight_2.png")
         plt.savefig(f"{output_directory}/insight_2.jpg", format="jpg", dpi=500)

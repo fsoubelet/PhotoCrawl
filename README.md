@@ -30,23 +30,25 @@ usage: __main__.py [-h] -i IMAGES_LOCATION [-o OUTPUT_DIR]
                    [--show-figures SHOW_FIGURES] [--save-figures SAVE_FIGURES]
                    [-l LOG_LEVEL]
 
-Python 3.6+ utility to get insight on your photography practice.
+Python 3.6.1+ utility to get insight on your photography practice.
 
 optional arguments:
   -h, --help            show this help message and exit
   -i IMAGES_LOCATION, --images IMAGES_LOCATION
                         Location, either relative or absolute, of the
-                        directory with images you wish to crawl
+                        directory with images you wish to crawl.
   -o OUTPUT_DIR, --output OUTPUT_DIR
                         Location, either relative or absolute, of the output
-                        directory.Defaults to 'outputs'
+                        directory. Defaults to 'outputs'
   --show-figures SHOW_FIGURES
                         Whether or not to show figures when plotting insights.
+                        Defaults to 'False'.
   --save-figures SAVE_FIGURES
                         Whether or not to save figures when plotting insights.
+                        Defaults to 'True'.
   -l LOG_LEVEL, --logs LOG_LEVEL
                         The base console logging level. Can be 'debug',
-                        'info', 'warning' and 'error'.Defaults to 'info'.
+                        'info', 'warning' and 'error'. Defaults to 'info'.
 ```
 
 The script will crawl files, extract exif and output visualizations named `insight_1.png` and `insight_2.png` in a newly created `outputs` folder (or a folder named as you specified).

@@ -9,12 +9,13 @@ import pathlib
 import sys
 import time
 from contextlib import contextmanager
+from typing import Callable, Iterator
 
 from loguru import logger
 
 
 @contextmanager
-def timeit(function: callable) -> None:
+def timeit(function: Callable) -> Iterator[None]:
     """
     Returns the time elapsed when executing code in the context via `function`.
     Original code from @jaimecp89
@@ -82,7 +83,7 @@ def parse_arguments():
         type=str,
         required=True,
         help="Location, either relative or absolute, of the directory with images you wish to "
-        "crawl",
+        "crawl.",
     )
     parser.add_argument(
         "-o",
@@ -90,7 +91,7 @@ def parse_arguments():
         dest="output_dir",
         default="outputs",
         type=str,
-        help="Location, either relative or absolute, of the output directory."
+        help="Location, either relative or absolute, of the output directory. "
         "Defaults to 'outputs'",
     )
     parser.add_argument(
@@ -98,14 +99,14 @@ def parse_arguments():
         dest="show_figures",
         default=False,
         type=bool,
-        help="Whether or not to show figures when plotting insights.",
+        help="Whether or not to show figures when plotting insights. Defaults to 'False'.",
     )
     parser.add_argument(
         "--save-figures",
         dest="save_figures",
         default=True,
         type=bool,
-        help="Whether or not to save figures when plotting insights.",
+        help="Whether or not to save figures when plotting insights. Defaults to 'True'.",
     )
     parser.add_argument(
         "-l",
@@ -113,7 +114,7 @@ def parse_arguments():
         dest="log_level",
         default="info",
         type=str,
-        help="The base console logging level. Can be 'debug', 'info', 'warning' and 'error'."
+        help="The base console logging level. Can be 'debug', 'info', 'warning' and 'error'. "
         "Defaults to 'info'.",
     )
     return parser.parse_args()

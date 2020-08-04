@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "photocrawl"
-version = "0.2.1"
+version = "0.2.2"
 description = "Analysis script of photography habits."
 authors = ["Felix Soubelet <felix.soubelet@liverpool.ac.uk>"]
 license = "MIT"
@@ -34,6 +34,7 @@ Pillow = "^7.1.2"
 
 [tool.poetry.dev-dependencies]
 portray = "^1.4"
+mypy = "^0.782"
 
 [tool.portray]
 docs_dir = "manual_docs"
