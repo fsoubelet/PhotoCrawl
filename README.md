@@ -57,13 +57,9 @@ The script will crawl files, extract exif and output visualizations named `insig
 
 Here is an example of what the script outputs:
 
-<p align="center">
-  <img src="https://github.com/fsoubelet/PhotoCrawl/blob/master/example_outputs/insight_1.jpg"/>
-</p>
+![Example_1](example_outputs/insight_1.jpg)
 
-<p align="center">
-  <img src="https://github.com/fsoubelet/PhotoCrawl/blob/master/example_outputs/insight_2.jpg"/>
-</p>
+![Example_2](example_outputs/insight_2.jpg)
 
 ## TODO
 
