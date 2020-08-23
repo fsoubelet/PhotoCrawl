@@ -29,6 +29,16 @@ class PhotoCrawler:
     Class to handle the crawling and processing of different files.
     """
 
+    __slots__ = {
+        "top_level_location": "PosixPath object to the directory to crawl for images",
+        "categorical_columns": "List of EXIF properties to treat as categoories",
+        "columns_renaming_dict": "Dictionary of EXIF properties to rename",
+        "interesting_features": "List of EXIF properties to look for and treat",
+        "lens_tags_mapping": "Dictionary of EXIF lens tags to rename",
+        "metering_modes_mapping": "Dictionary of EXIF metering modes to rename",
+        "raw_formats": "Dictionary of RAW file formats and their descriptions",
+    }
+
     def __init__(self, directory_to_crawl: pathlib.Path):
         self.top_level_location: pathlib.Path = directory_to_crawl
         self.categorical_columns: List[str] = [
