@@ -34,7 +34,7 @@ Pillow = "^7.1.2"
 
 [tool.poetry.dev-dependencies]
 portray = "^1.4"
-mypy = "^0.782"
+mypy = "^0.790"
 
 [tool.portray]
 docs_dir = "manual_docs"
