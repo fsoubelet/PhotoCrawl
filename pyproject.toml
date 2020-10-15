@@ -30,7 +30,7 @@ pandas = "^1.0.3"
 seaborn = "^0.10.1"
 pyexifinfo = "^0.4.0"
 loguru = "^0.4.1"
-Pillow = "^7.1.2"
+Pillow = ">=7.1.2,<9.0.0"
 
 [tool.poetry.dev-dependencies]
 portray = "^1.4"
