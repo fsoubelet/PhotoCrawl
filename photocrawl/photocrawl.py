@@ -11,19 +11,12 @@ import shlex
 from multiprocessing import Pool, cpu_count
 from typing import Dict, List
 
-import pendulum
 import pandas as pd
+import pendulum
 import pyexifinfo as pyexif
 from loguru import logger
 
-from photocrawl.plotting_functions import plot_insight
-from photocrawl.utils import (
-    figure_focal_range,
-    parse_arguments,
-    set_logger_level,
-    setup_output_directory,
-    timeit,
-)
+from photocrawl.utils import figure_focal_range, timeit
 
 
 class PhotoCrawler:
@@ -255,33 +248,3 @@ class PhotoCrawler:
                 working_df["Lens"].map(self.lens_tags_mapping).fillna(working_df["Lens"])
             )
         return working_df.dropna()
-
-
-def crawl() -> None:
-    """
-    Gets location from commandline arguments, crawls relevant files and performs analysis.
-    Will plot and save figures.
-
-    Returns:
-        Nothing.
-    """
-    command_line_args = parse_arguments()
-    set_logger_level(command_line_args.log_level)
-
-    output_directory: pathlib.Path = setup_output_directory(command_line_args.output_dir)
-    files_location = pathlib.Path(command_line_args.images_location)
-
-    crawler = PhotoCrawler(files_location)
-    exif_data_df: pd.DataFrame = crawler.process_files()
-    exif_data_df = crawler.refactor_exif_data(exif_data_df)
-
-    plot_insight(
-        data=exif_data_df,
-        output_directory=output_directory,
-        showfig=command_line_args.show_figures,
-        savefig=command_line_args.save_figures,
-    )
-
-
-if __name__ == "__main__":
-    crawl()

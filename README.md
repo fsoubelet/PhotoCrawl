@@ -6,7 +6,7 @@ A simple script to run analysis and get insight on my use of equipment and setti
 
 ### Prerequisites
 
-This script runs on Python3.6.1+, and requires the following libraries: [`PyExifInfo`][pyexifinfo], `matplotlib`, `seaborn`, `pandas` and `loguru`.
+This script runs on Python3.6.1+, and requires the following libraries: [`PyExifInfo`][pyexifinfo], `matplotlib`, `seaborn`, `pandas`, `pendulum`, `typer` and `loguru`.
 Most importantly, it also requires that you have the amazing [ExifTool][exiftool] package by Phil Harvey.
 
 ### Install
@@ -19,36 +19,43 @@ pip install photocrawl
 
 ## Usage
 
-With this package is installed in the activated enrivonment, usage is:
+With this package installed in the activated enrivonment, it can be called through `python -m photocrawl` or through a newly created `photocrawl` command.
+
+
+Detailed usage goes as follows:
 ```bash
-python -m photocrawl -i files_location
-```
+Usage: photocrawl [OPTIONS] [IMAGES]
 
-Detailed options go as follows:
-```bash
-usage: __main__.py [-h] -i IMAGES_LOCATION [-o OUTPUT_DIR]
-                   [--show-figures SHOW_FIGURES] [--save-figures SAVE_FIGURES]
-                   [-l LOG_LEVEL]
+  Crawl and ensemble of pictures to run analysis of their metadata and get
+  insight on one's use of equipment and settings in their practice of
+  photography.
 
-Python 3.6.1+ utility to get insight on your photography practice.
+Arguments:
+  [IMAGES]  Location, relative or absolute, of the images directory you wish
+            to crawl.
 
-optional arguments:
-  -h, --help            show this help message and exit
-  -i IMAGES_LOCATION, --images IMAGES_LOCATION
-                        Location, either relative or absolute, of the
-                        directory with images you wish to crawl.
-  -o OUTPUT_DIR, --output OUTPUT_DIR
-                        Location, either relative or absolute, of the output
-                        directory. Defaults to 'outputs'
-  --show-figures SHOW_FIGURES
-                        Whether or not to show figures when plotting insights.
-                        Defaults to 'False'.
-  --save-figures SAVE_FIGURES
-                        Whether or not to save figures when plotting insights.
-                        Defaults to 'True'.
-  -l LOG_LEVEL, --logs LOG_LEVEL
-                        The base console logging level. Can be 'debug',
-                        'info', 'warning' and 'error'. Defaults to 'info'.
+
+Options:
+  --output-dir TEXT               Location, either relative or absolute, of
+                                  the output directory.  [default: outputs]
+
+  --show-figures / --no-show-figures
+                                  Whether or not to show figures when plotting
+                                  insights.  [default: False]
+
+  --save-figures / --no-save-figures
+                                  Whether or not to save figures when plotting
+                                  insights.  [default: False]
+
+  --log-level TEXT                The base console logging level. Can be
+                                  'debug', 'info', 'warning' and 'error'.
+                                  [default: info]
+
+  --install-completion            Install completion for the current shell.
+  --show-completion               Show completion for the current shell, to
+                                  copy it or customize the installation.
+
+  --help                          Show this message and exit.
 ```
 
 The script will crawl files, extract exif and output visualizations named `insight_1.png` and `insight_2.png` in a newly created `outputs` folder (or a folder named as you specified).
@@ -67,8 +74,9 @@ Here is an example of what the script outputs:
 - [x] Handling subfolders when looking for files.
 - [x] Output all insight in a single/two plot.
 - [x] Implement proper logging.
-- [x] Make into a package
-- [x] Make callable as a python module (`python -m photocrawl ...`)
+- [x] Make into a package.
+- [x] Make callable as a python module (`python -m photocrawl ...`).
+- [x] Improving the command line experience.
 
 ## License
 
