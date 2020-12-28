@@ -7,9 +7,11 @@ practice of photography.
 """
 
 import pathlib
+import shlex
 from multiprocessing import Pool, cpu_count
 from typing import Dict, List
 
+import pendulum
 import pandas as pd
 import pyexifinfo as pyexif
 from loguru import logger
@@ -58,6 +60,7 @@ class PhotoCrawler:
             "ExposureCompensation": "Exposure_Compensation",
             "ExposureProgram": "Exposure_Program",
             "FNumber": "F_Number",
+            "FocalLength": "Focal_Length",
             "FocalLengthIn35mmFormat": "Focal_Length",
             "LensMake": "Lens_Brand",
             "LensModel": "Lens",
@@ -73,6 +76,7 @@ class PhotoCrawler:
             "ExposureProgram",
             "FNumber",
             "Flash",
+            "FocalLength",
             "FocalLengthIn35mmFormat",
             "ISO",
             "LensMake",
@@ -197,6 +201,7 @@ class PhotoCrawler:
                 metadata = pd.DataFrame(list(pool.imap_unordered(self.get_exif, crawled_images)))
         return metadata
 
+    @logger.catch()
     def refactor_exif_data(self, crawled_exif: pd.DataFrame) -> pd.DataFrame:
         """
         Refactor the `pandas.Dataframe` with crawled exif data by improving labels and
@@ -214,17 +219,26 @@ class PhotoCrawler:
             working_df.dropna(inplace=True)
 
             logger.debug("Refactoring shots dates")
-            working_df["Year"] = working_df["DateTimeOriginal"].str[:4]
-            working_df["Month"] = working_df["DateTimeOriginal"].str[5:7]
-            working_df["Day"] = working_df["DateTimeOriginal"].str[8:10]
+            working_df["Year"] = working_df["DateTimeOriginal"].apply(
+                lambda x: pendulum.parse(x).year
+            )
+            working_df["Month"] = working_df["DateTimeOriginal"].apply(
+                lambda x: pendulum.parse(x).month
+            )
+            working_df["Day"] = working_df["DateTimeOriginal"].apply(
+                lambda x: pendulum.parse(x).day
+            )
 
             logger.debug("Extrapolating focal ranges")
-            working_df["Focal_Length"] = working_df["Focal_Length"].apply(lambda x: int(str(x[:3])))
+            working_df["Focal_Length"] = working_df["Focal_Length"].apply(
+                lambda x: float(shlex.split(x)[0])
+            )
             working_df["Focal_Range"] = working_df["Focal_Length"].apply(figure_focal_range)
 
             logger.debug("Making data categorical")
             for column in self.categorical_columns:
-                working_df[column] = working_df[column].astype("category")
+                if column in working_df.columns.to_numpy():
+                    working_df[column] = working_df[column].astype("category")
 
             # Does mapping, falls back to original names for values absent in the mapping dictionary
             logger.debug("Refactoring metering mode names")
