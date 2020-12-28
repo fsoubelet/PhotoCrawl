@@ -7,27 +7,32 @@ practice of photography.
 """
 
 import pathlib
+import shlex
 from multiprocessing import Pool, cpu_count
 from typing import Dict, List
 
 import pandas as pd
+import pendulum
 import pyexifinfo as pyexif
 from loguru import logger
 
-from photocrawl.plotting_functions import plot_insight
-from photocrawl.utils import (
-    figure_focal_range,
-    parse_arguments,
-    set_logger_level,
-    setup_output_directory,
-    timeit,
-)
+from photocrawl.utils import figure_focal_range, timeit
 
 
 class PhotoCrawler:
     """
     Class to handle the crawling and processing of different files.
     """
+
+    __slots__ = {
+        "top_level_location": "PosixPath object to the directory to crawl for images",
+        "categorical_columns": "List of EXIF properties to treat as categoories",
+        "columns_renaming_dict": "Dictionary of EXIF properties to rename",
+        "interesting_features": "List of EXIF properties to look for and treat",
+        "lens_tags_mapping": "Dictionary of EXIF lens tags to rename",
+        "metering_modes_mapping": "Dictionary of EXIF metering modes to rename",
+        "raw_formats": "Dictionary of RAW file formats and their descriptions",
+    }
 
     def __init__(self, directory_to_crawl: pathlib.Path):
         self.top_level_location: pathlib.Path = directory_to_crawl
@@ -48,6 +53,7 @@ class PhotoCrawler:
             "ExposureCompensation": "Exposure_Compensation",
             "ExposureProgram": "Exposure_Program",
             "FNumber": "F_Number",
+            "FocalLength": "Focal_Length",
             "FocalLengthIn35mmFormat": "Focal_Length",
             "LensMake": "Lens_Brand",
             "LensModel": "Lens",
@@ -63,6 +69,7 @@ class PhotoCrawler:
             "ExposureProgram",
             "FNumber",
             "Flash",
+            "FocalLength",
             "FocalLengthIn35mmFormat",
             "ISO",
             "LensMake",
@@ -187,6 +194,7 @@ class PhotoCrawler:
                 metadata = pd.DataFrame(list(pool.imap_unordered(self.get_exif, crawled_images)))
         return metadata
 
+    @logger.catch()
     def refactor_exif_data(self, crawled_exif: pd.DataFrame) -> pd.DataFrame:
         """
         Refactor the `pandas.Dataframe` with crawled exif data by improving labels and
@@ -204,17 +212,26 @@ class PhotoCrawler:
             working_df.dropna(inplace=True)
 
             logger.debug("Refactoring shots dates")
-            working_df["Year"] = working_df["DateTimeOriginal"].str[:4]
-            working_df["Month"] = working_df["DateTimeOriginal"].str[5:7]
-            working_df["Day"] = working_df["DateTimeOriginal"].str[8:10]
+            working_df["Year"] = working_df["DateTimeOriginal"].apply(
+                lambda x: pendulum.parse(x).year
+            )
+            working_df["Month"] = working_df["DateTimeOriginal"].apply(
+                lambda x: pendulum.parse(x).month
+            )
+            working_df["Day"] = working_df["DateTimeOriginal"].apply(
+                lambda x: pendulum.parse(x).day
+            )
 
             logger.debug("Extrapolating focal ranges")
-            working_df["Focal_Length"] = working_df["Focal_Length"].apply(lambda x: int(str(x[:3])))
+            working_df["Focal_Length"] = working_df["Focal_Length"].apply(
+                lambda x: float(shlex.split(x)[0])
+            )
             working_df["Focal_Range"] = working_df["Focal_Length"].apply(figure_focal_range)
 
             logger.debug("Making data categorical")
             for column in self.categorical_columns:
-                working_df[column] = working_df[column].astype("category")
+                if column in working_df.columns.to_numpy():
+                    working_df[column] = working_df[column].astype("category")
 
             # Does mapping, falls back to original names for values absent in the mapping dictionary
             logger.debug("Refactoring metering mode names")
@@ -231,33 +248,3 @@ class PhotoCrawler:
                 working_df["Lens"].map(self.lens_tags_mapping).fillna(working_df["Lens"])
             )
         return working_df.dropna()
-
-
-def crawl() -> None:
-    """
-    Gets location from commandline arguments, crawls relevant files and performs analysis.
-    Will plot and save figures.
-
-    Returns:
-        Nothing.
-    """
-    command_line_args = parse_arguments()
-    set_logger_level(command_line_args.log_level)
-
-    output_directory: pathlib.Path = setup_output_directory(command_line_args.output_dir)
-    files_location = pathlib.Path(command_line_args.images_location)
-
-    crawler = PhotoCrawler(files_location)
-    exif_data_df: pd.DataFrame = crawler.process_files()
-    exif_data_df = crawler.refactor_exif_data(exif_data_df)
-
-    plot_insight(
-        data=exif_data_df,
-        output_directory=output_directory,
-        showfig=command_line_args.show_figures,
-        savefig=command_line_args.save_figures,
-    )
-
-
-if __name__ == "__main__":
-    crawl()

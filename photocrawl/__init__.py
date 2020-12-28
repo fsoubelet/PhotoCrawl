@@ -14,7 +14,10 @@ settings in their practice of photography.
 __title__ = "photocrawl"
 __description__ = "Analysis script of photography habits."
 __url__ = "https://github.com/fsoubelet/PhotoCrawl"
-__version__ = "0.2.2"
+__version__ = "0.3"
 __author__ = "Felix Soubelet"
 __author_email__ = "felix.soubelet@cern.ch"
 __license__ = "MIT"
+
+
+from .photocrawl import PhotoCrawler

@@ -4,7 +4,6 @@ Created on 2019.08.15
 
 Some utilities for main functionality.
 """
-import argparse
 import pathlib
 import sys
 import time
@@ -66,58 +65,6 @@ def figure_focal_range(focal_length: float) -> str:
         return "200-400mm"
     else:
         return "400mm+"
-
-
-def parse_arguments():
-    """
-    Simple argument parser to make life easier in the command-line.
-    """
-    parser = argparse.ArgumentParser(
-        description="Python 3.6.1+ utility to get insight on your " "photography practice."
-    )
-    parser.add_argument(
-        "-i",
-        "--images",
-        dest="images_location",
-        default=None,
-        type=str,
-        required=True,
-        help="Location, either relative or absolute, of the directory with images you wish to "
-        "crawl.",
-    )
-    parser.add_argument(
-        "-o",
-        "--output",
-        dest="output_dir",
-        default="outputs",
-        type=str,
-        help="Location, either relative or absolute, of the output directory. "
-        "Defaults to 'outputs'",
-    )
-    parser.add_argument(
-        "--show-figures",
-        dest="show_figures",
-        default=False,
-        type=bool,
-        help="Whether or not to show figures when plotting insights. Defaults to 'False'.",
-    )
-    parser.add_argument(
-        "--save-figures",
-        dest="save_figures",
-        default=True,
-        type=bool,
-        help="Whether or not to save figures when plotting insights. Defaults to 'True'.",
-    )
-    parser.add_argument(
-        "-l",
-        "--logs",
-        dest="log_level",
-        default="info",
-        type=str,
-        help="The base console logging level. Can be 'debug', 'info', 'warning' and 'error'. "
-        "Defaults to 'info'.",
-    )
-    return parser.parse_args()
 
 
 def set_logger_level(log_level: str = "info") -> None:
