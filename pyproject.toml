@@ -35,7 +35,7 @@ pendulum = "^2.1.2"
 typer = "^0.3.2"
 
 [tool.poetry.dev-dependencies]
-portray = "^1.4"
+portray = "^1.5"
 mypy = "^0.782"
 typer-cli = "^0.0.11"
 
