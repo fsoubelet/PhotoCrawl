@@ -1,0 +1,33 @@
+version: 2
+updates:
+- package-ecosystem: pip
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "04:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: loguru
+    versions:
+    - "> 0.4.1, < 1"
+  - dependency-name: mypy
+    versions:
+    - "> 0.782, < 1"
+  - dependency-name: pillow
+    versions:
+    - ">= 8.a, < 9"
+  - dependency-name: seaborn
+    versions:
+    - "> 0.10.1, < 1"
+  - dependency-name: urllib3
+    versions:
+    - 1.26.3
+    - 1.26.4
+  - dependency-name: jinja2
+    versions:
+    - 2.11.3
+  - dependency-name: portray
+    versions:
+    - 1.5.0
+    - 1.5.1
+    - 1.5.2
