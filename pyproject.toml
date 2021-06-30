@@ -37,7 +37,7 @@ typer = "^0.3.2"
 [tool.poetry.dev-dependencies]
 portray = "^1.6"
 mypy = "^0.782"
-typer-cli = "^0.0.11"
+typer-cli = "^0.0.12"
 
 [tool.poetry.scripts]
 photocrawl = "photocrawl.__main__:app"
