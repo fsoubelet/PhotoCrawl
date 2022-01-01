@@ -11,7 +11,7 @@ Most importantly, it also requires that you have the amazing [ExifTool][exiftool
 
 ### Install
 
-This code is compatible with `Python 3.6+`.
+This code is compatible with `Python 3.7+`.
 If for some reason you have a need for it, you can simply install it in your virtual enrivonment with:
 ```bash
 pip install photocrawl
