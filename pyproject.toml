@@ -15,9 +15,10 @@ classifiers = [
     "Natural Language :: English",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.6",
     "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: Implementation :: CPython",
     "Topic :: Scientific/Engineering :: Visualization",
     "Topic :: Utilities",
@@ -25,14 +26,14 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = "^3.7"
-matplotlib = "^3.2.1"
-pandas = "^1.0.3"
-seaborn = "^0.10.1"
-pyexifinfo = "^0.4.0"
-loguru = "^0.4.1"
-Pillow = "^8.3.2"
-pendulum = "^2.1.2"
-typer = "^0.3.2"
+matplotlib = "^3.2"
+pandas = "^1.0"
+seaborn = "^0.10"
+pyexifinfo = "^0.4"
+loguru = "^0.5"
+Pillow = "^9.0"
+pendulum = "^2.1"
+typer = "^0.3"
 
 [tool.poetry.dev-dependencies]
 portray = "^1.6"
@@ -60,5 +61,5 @@ palette = {scheme = "slate", primary = "indico", accent = "pink"}
 font = {text = "roboto", code = "Fira Code"}
 
 [build-system]
-requires = ["poetry>=0.12"]
+requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.masonry.api"
