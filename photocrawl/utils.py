@@ -4,13 +4,21 @@ Created on 2019.08.15
 
 Some utilities for main functionality.
 """
+
 import pathlib
 import sys
 import time
+from collections.abc import Iterator
 from contextlib import contextmanager
-from typing import Callable, Iterator
+from typing import Callable
 
 from loguru import logger
+
+FOCAL_16: int = 16
+FOCAL_23: int = 23
+FOCAL_70: int = 70
+FOCAL_200: int = 200
+FOCAL_400: int = 400
 
 
 @contextmanager
@@ -52,19 +60,19 @@ def figure_focal_range(focal_length: float) -> str:
     """
     if focal_length <= 0:
         logger.error("Focal length should never be a negative value")
-        raise ValueError("Invalid focal length value (< 0)")
-    elif focal_length < 16:
+        msg = "Invalid focal length value (< 0)"
+        raise ValueError(msg)
+    if focal_length < FOCAL_16:
         return "1-15mm"
-    elif 16 <= focal_length < 23:
+    if FOCAL_16 <= focal_length < FOCAL_23:
         return "16-23mm"
-    elif 23 <= focal_length < 70:
+    if FOCAL_23 <= focal_length < FOCAL_70:
         return "24-70mm"
-    elif 70 <= focal_length < 200:
+    if FOCAL_200 <= focal_length < FOCAL_200:
         return "70-200mm"
-    elif 200 <= focal_length < 400:
+    if FOCAL_400 <= focal_length < FOCAL_400:
         return "200-400mm"
-    else:
-        return "400mm+"
+    return "400mm+"
 
 
 def set_logger_level(log_level: str = "info") -> None:
@@ -100,7 +108,6 @@ def setup_output_directory(directory_name: str) -> pathlib.Path:
         directory.mkdir()
     else:
         logger.warning(
-            f"Output directory {directory} already present. "
-            "This may lead to unexpected behaviour."
+            f"Output directory {directory} already present. " "This may lead to unexpected behaviour."
         )
     return directory

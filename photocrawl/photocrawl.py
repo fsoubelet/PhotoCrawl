@@ -9,7 +9,6 @@ practice of photography.
 import pathlib
 import shlex
 from multiprocessing import Pool, cpu_count
-from typing import Dict, List
 
 import pandas as pd
 import pendulum
@@ -26,17 +25,17 @@ class PhotoCrawler:
 
     __slots__ = {
         "top_level_location": "PosixPath object to the directory to crawl for images",
-        "categorical_columns": "List of EXIF properties to treat as categoories",
-        "columns_renaming_dict": "Dictionary of EXIF properties to rename",
-        "interesting_features": "List of EXIF properties to look for and treat",
-        "lens_tags_mapping": "Dictionary of EXIF lens tags to rename",
-        "metering_modes_mapping": "Dictionary of EXIF metering modes to rename",
-        "raw_formats": "Dictionary of RAW file formats and their descriptions",
+        "categorical_columns": "list of EXIF properties to treat as categoories",
+        "columns_renaming_dict": "dictionary of EXIF properties to rename",
+        "interesting_features": "list of EXIF properties to look for and treat",
+        "lens_tags_mapping": "dictionary of EXIF lens tags to rename",
+        "metering_modes_mapping": "dictionary of EXIF metering modes to rename",
+        "raw_formats": "dictionary of RAW file formats and their descriptions",
     }
 
     def __init__(self, directory_to_crawl: pathlib.Path):
         self.top_level_location: pathlib.Path = directory_to_crawl
-        self.categorical_columns: List[str] = [
+        self.categorical_columns: list[str] = [
             "Exposure_Compensation",
             "Exposure_Program",
             "Flash",
@@ -49,7 +48,7 @@ class PhotoCrawler:
             "White_Balance",
             "Focal_Range",
         ]
-        self.columns_renaming_dict: Dict[str, str] = {
+        self.columns_renaming_dict: dict[str, str] = {
             "ExposureCompensation": "Exposure_Compensation",
             "ExposureProgram": "Exposure_Program",
             "FNumber": "F_Number",
@@ -63,7 +62,7 @@ class PhotoCrawler:
             "ShutterSpeedValue": "Shutter_Speed",
             "WhiteBalance": "White_Balance",
         }
-        self.interesting_features: List[str] = [
+        self.interesting_features: list[str] = [
             "DateTimeOriginal",
             "ExposureCompensation",
             "ExposureProgram",
@@ -80,7 +79,7 @@ class PhotoCrawler:
             "ShutterSpeedValue",
             "WhiteBalance",
         ]
-        self.lens_tags_mapping: Dict[str, str] = {
+        self.lens_tags_mapping: dict[str, str] = {
             "XF10-24mmF4 R OIS": "XF 10-24mm f/4 R",
             "XF18-135mmF3.5-5.6R LM IOS WR": "XF 18-135mm f/3.5-5.6 R LM OIS WR",
             "XF18-55mmF2.8-4 R LM OIS": "XF 18-55mm f/2.8-4 R LM OIS",
@@ -90,11 +89,11 @@ class PhotoCrawler:
             "XF55-200mmF3.5-4.8 R LM OIS": "XF 55-200mm f/3.5-4.8 R LM OIS",
             "XF56mmF1.2 R APD": "XF 56mm f/1.2 R APD",
         }
-        self.metering_modes_mapping: Dict[str, str] = {
+        self.metering_modes_mapping: dict[str, str] = {
             "Center-weighted average": "Center Weighted",
             "Multi-segment": "Multi Segment",
         }
-        self.raw_formats: Dict[str, str] = {
+        self.raw_formats: dict[str, str] = {
             "JPG": "The classic jpg file format",
             "JPEG": "Also the jpg file format",
             "3FR": "Hasselblad 3F RAW Image",
@@ -135,7 +134,7 @@ class PhotoCrawler:
         }
         logger.debug("PhotoCrawler instantiation successful")
 
-    def get_exif(self, photo_file: str) -> Dict[str, str]:
+    def get_exif(self, photo_file: str) -> dict[str, str]:
         """
         Returns a dictionary with interesting features from image EXIF.
 
@@ -152,7 +151,7 @@ class PhotoCrawler:
             if key[5:] in self.interesting_features
         }
 
-    def crawl_files(self) -> List[str]:
+    def crawl_files(self) -> list[str]:
         """
         Recursively go over relevant files in the `top_level_localtion` directory and
         sub-directories, and return a list of PosixPath to each relevant file.
@@ -161,17 +160,16 @@ class PhotoCrawler:
             A list.
         """
         logger.debug(f"Crawling '{self.top_level_location.absolute()}' for relevant files")
-        crawled_images: List[str] = []
+        crawled_images: list[str] = []
         with timeit(
             lambda spanned: logger.info(
                 f"Crawled and found {len(crawled_images)} relevant files in {spanned:.4f} seconds"
             )
         ):
-            for extension in self.raw_formats.keys():
+            for extension in self.raw_formats:
                 crawled_images.extend(self.top_level_location.rglob(f"*.{extension}"))
                 crawled_images.extend(self.top_level_location.rglob(f"*.{extension.lower()}"))
-            crawled_images = sorted(str(result) for result in crawled_images)
-        return crawled_images
+            return sorted(str(result) for result in crawled_images)
 
     def process_files(self) -> pd.DataFrame:
         """
@@ -183,16 +181,17 @@ class PhotoCrawler:
             a row, and each column corresponds to an exif data field.
         """
         logger.debug("Gathering exif metadata from crawled files")
-        crawled_images: List[str] = self.crawl_files()
+        crawled_images: list[str] = self.crawl_files()
 
-        with timeit(
-            lambda spanned: logger.info(
-                f"Gathered metadata of {len(crawled_images)} files in {spanned:.4f} seconds"
-            )
+        with (
+            timeit(
+                lambda spanned: logger.info(
+                    f"Gathered metadata of {len(crawled_images)} files in {spanned:.4f} seconds"
+                )
+            ),
+            Pool(cpu_count()) as pool,
         ):
-            with Pool(cpu_count()) as pool:
-                metadata = pd.DataFrame(list(pool.imap_unordered(self.get_exif, crawled_images)))
-        return metadata
+            return pd.DataFrame(list(pool.imap_unordered(self.get_exif, crawled_images)))
 
     @logger.catch()
     def refactor_exif_data(self, crawled_exif: pd.DataFrame) -> pd.DataFrame:
@@ -212,20 +211,12 @@ class PhotoCrawler:
             working_df.dropna(inplace=True)
 
             logger.debug("Refactoring shots dates")
-            working_df["Year"] = working_df["DateTimeOriginal"].apply(
-                lambda x: pendulum.parse(x).year
-            )
-            working_df["Month"] = working_df["DateTimeOriginal"].apply(
-                lambda x: pendulum.parse(x).month
-            )
-            working_df["Day"] = working_df["DateTimeOriginal"].apply(
-                lambda x: pendulum.parse(x).day
-            )
+            working_df["Year"] = working_df["DateTimeOriginal"].apply(lambda x: pendulum.parse(x).year)
+            working_df["Month"] = working_df["DateTimeOriginal"].apply(lambda x: pendulum.parse(x).month)
+            working_df["Day"] = working_df["DateTimeOriginal"].apply(lambda x: pendulum.parse(x).day)
 
             logger.debug("Extrapolating focal ranges")
-            working_df["Focal_Length"] = working_df["Focal_Length"].apply(
-                lambda x: float(shlex.split(x)[0])
-            )
+            working_df["Focal_Length"] = working_df["Focal_Length"].apply(lambda x: float(shlex.split(x)[0]))
             working_df["Focal_Range"] = working_df["Focal_Length"].apply(figure_focal_range)
 
             logger.debug("Making data categorical")
@@ -244,7 +235,5 @@ class PhotoCrawler:
             # Does mapping, falls back to original names for values absent in the mapping dictionary
             logger.debug("Refactoring lens names, might not be exhaustive")
             working_df["Lens"] = working_df["Lens"].cat.remove_unused_categories()
-            working_df["Lens"] = (
-                working_df["Lens"].map(self.lens_tags_mapping).fillna(working_df["Lens"])
-            )
+            working_df["Lens"] = working_df["Lens"].map(self.lens_tags_mapping).fillna(working_df["Lens"])
         return working_df.dropna()

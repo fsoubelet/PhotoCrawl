@@ -7,19 +7,19 @@ Plotting functions for main script.
 
 import pathlib
 
-import matplotlib
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 from loguru import logger
+from matplotlib.axes import Axes
 
 sns.set_palette("pastel")
 sns.set_style("whitegrid")
 
 
-def plot_shots_per_camera(subplot: matplotlib.axes.Axes, data: pd.DataFrame) -> None:
+def plot_shots_per_camera(subplot: Axes, data: pd.DataFrame) -> None:
     """
-	Barplot of the number of shots per camera, on the provided subplot. Acts in place.
+        Barplot of the number of shots per camera, on the provided subplot. Acts in place.
 
     Args:
         subplot: the subplot matplotlib.axes.Axes on which to plot.
@@ -33,9 +33,7 @@ def plot_shots_per_camera(subplot: matplotlib.axes.Axes, data: pd.DataFrame) -> 
         Here is how to bypass it :)
     """
     logger.debug("Plotting shots per camera")
-    sns.countplot(
-        y="Camera", hue="Brand", data=data, ax=subplot, order=data.Camera.value_counts().index
-    )
+    sns.countplot(y="Camera", hue="Brand", data=data, ax=subplot, order=data.Camera.value_counts().index)
     subplot.set_title("Number of Shots per Camera Model", fontsize=25)
     subplot.tick_params(axis="both", which="major", labelsize=13)
     subplot.set_xlabel("Number of Shots", fontsize=20)
@@ -43,7 +41,7 @@ def plot_shots_per_camera(subplot: matplotlib.axes.Axes, data: pd.DataFrame) -> 
     subplot.legend(loc="lower right", fontsize=18, title_fontsize=22)
 
 
-def plot_shots_per_fnumber(subplot: matplotlib.axes.Axes, data: pd.DataFrame) -> None:
+def plot_shots_per_fnumber(subplot: Axes, data: pd.DataFrame) -> None:
     """
     Barplot of the number of shots per F number, on the provided subplot.
 
@@ -63,7 +61,7 @@ def plot_shots_per_fnumber(subplot: matplotlib.axes.Axes, data: pd.DataFrame) ->
     subplot.set_ylabel("Number of Shots", fontsize=20)
 
 
-def plot_shots_per_focal_length(subplot: matplotlib.axes.Axes, data: pd.DataFrame) -> None:
+def plot_shots_per_focal_length(subplot: Axes, data: pd.DataFrame) -> None:
     """
     Barplot of the number of shots per focal length (FF equivalent), on the provided subplot.
 
@@ -89,7 +87,7 @@ def plot_shots_per_focal_length(subplot: matplotlib.axes.Axes, data: pd.DataFram
     subplot.legend(loc="upper center", fontsize=15, title_fontsize=21)
 
 
-def plot_shots_per_lens(subplot: matplotlib.axes.Axes, data: pd.DataFrame) -> None:
+def plot_shots_per_lens(subplot: Axes, data: pd.DataFrame) -> None:
     """
     Barplot of the number of shots per lens used, on the provided subplot. Acts in place.
 
@@ -101,9 +99,7 @@ def plot_shots_per_lens(subplot: matplotlib.axes.Axes, data: pd.DataFrame) -> No
         Nothing, plots in place.
     """
     logger.debug("Plotting shots per lens")
-    sns.countplot(
-        y="Lens", hue="Brand", data=data, ax=subplot, order=data.Lens.value_counts().index
-    )
+    sns.countplot(y="Lens", hue="Brand", data=data, ax=subplot, order=data.Lens.value_counts().index)
     subplot.set_title("Number of Shots per Lens Model", fontsize=25)
     subplot.tick_params(axis="both", which="major", labelsize=13)
     subplot.set_xlabel("Number of Shots", fontsize=20)
@@ -111,7 +107,7 @@ def plot_shots_per_lens(subplot: matplotlib.axes.Axes, data: pd.DataFrame) -> No
     subplot.legend(loc="lower right", fontsize=18, title_fontsize=25)
 
 
-def plot_shots_per_shutter_speed(subplot: matplotlib.axes.Axes, data: pd.DataFrame) -> None:
+def plot_shots_per_shutter_speed(subplot: Axes, data: pd.DataFrame) -> None:
     """
     Barplot of the number of shots per shutter speed, on the provided subplot. Acts in place.
 
@@ -123,16 +119,14 @@ def plot_shots_per_shutter_speed(subplot: matplotlib.axes.Axes, data: pd.DataFra
         Nothing, plots in place.
     """
     logger.debug("Plotting shots per shutter speed")
-    sns.countplot(
-        x="Shutter_Speed", data=data, ax=subplot, order=data.Shutter_Speed.value_counts().index
-    )
+    sns.countplot(x="Shutter_Speed", data=data, ax=subplot, order=data.Shutter_Speed.value_counts().index)
     subplot.set_title("Number of Shots per Shutter Speed", fontsize=25)
     subplot.tick_params(axis="x", which="major", rotation=70)
     subplot.set_xlabel("Shutter Speed", fontsize=20)
     subplot.set_ylabel("Number of Shots", fontsize=20)
 
 
-def plot_shots_per_year(subplot: matplotlib.axes.Axes, data: pd.DataFrame) -> None:
+def plot_shots_per_year(subplot: Axes, data: pd.DataFrame) -> None:
     """
     Barplot of the number of shots taken each year, on the provided subplot. Acts in place.
 
@@ -144,9 +138,7 @@ def plot_shots_per_year(subplot: matplotlib.axes.Axes, data: pd.DataFrame) -> No
         Nothing, plots in place.
     """
     logger.debug("Plotting shots per year")
-    sns.countplot(
-        y="Year", hue="Brand", data=data, ax=subplot, order=data.Year.value_counts().index
-    )
+    sns.countplot(y="Year", hue="Brand", data=data, ax=subplot, order=data.Year.value_counts().index)
     subplot.set_title("Number of Shots per Year", fontsize=25)
     subplot.tick_params(axis="both", which="major", labelsize=13)
     subplot.set_xlabel("Number of Shots", fontsize=20)
@@ -154,9 +146,7 @@ def plot_shots_per_year(subplot: matplotlib.axes.Axes, data: pd.DataFrame) -> No
     subplot.legend(loc="lower right", fontsize=18, title_fontsize=22)
 
 
-def plot_shots_per_exposure_program_setting(
-    subplot: matplotlib.axes.Axes, data: pd.DataFrame
-) -> None:
+def plot_shots_per_exposure_program_setting(subplot: Axes, data: pd.DataFrame) -> None:
     """
     Barplot of the number of shots per camera, on the provided subplot. Acts in place.
 
@@ -182,7 +172,7 @@ def plot_shots_per_exposure_program_setting(
     subplot.set_ylabel("Number of Shots", fontsize=20)
 
 
-def plot_shots_per_flash_setting(subplot: matplotlib.axes.Axes, data: pd.DataFrame) -> None:
+def plot_shots_per_flash_setting(subplot: Axes, data: pd.DataFrame) -> None:
     """
     Barplot of the number of shots with or without flash, on the provided subplot. Acts in place.
 
@@ -208,7 +198,7 @@ def plot_shots_per_flash_setting(subplot: matplotlib.axes.Axes, data: pd.DataFra
     subplot.set_ylabel("Number of Shots", fontsize=20)
 
 
-def plot_shots_per_metering_mode(subplot: matplotlib.axes.Axes, data: pd.DataFrame) -> None:
+def plot_shots_per_metering_mode(subplot: Axes, data: pd.DataFrame) -> None:
     """
     Barplot of the number of shots per metering mode, on the provided subplot. Acts in place.
 
@@ -235,7 +225,7 @@ def plot_shots_per_metering_mode(subplot: matplotlib.axes.Axes, data: pd.DataFra
     subplot.set_ylabel("Number of Shots", fontsize=20)
 
 
-def plot_shots_per_white_balance_setting(subplot: matplotlib.axes.Axes, data: pd.DataFrame) -> None:
+def plot_shots_per_white_balance_setting(subplot: Axes, data: pd.DataFrame) -> None:
     """
     Barplot of the number of shots per white balance setting, on the provided subplot. Acts in
     place.
@@ -262,9 +252,7 @@ def plot_shots_per_white_balance_setting(subplot: matplotlib.axes.Axes, data: pd
     subplot.set_ylabel("White Balance", fontsize=20)
 
 
-def plot_shots_per_exposure_compensation_setting(
-    subplot: matplotlib.axes.Axes, data: pd.DataFrame
-) -> None:
+def plot_shots_per_exposure_compensation_setting(subplot: Axes, data: pd.DataFrame) -> None:
     """
     Barplot of the number of shots per Exposure Compensation setting, on the provided subplot.
     Acts in place.
@@ -291,7 +279,7 @@ def plot_shots_per_exposure_compensation_setting(
     subplot.set_ylabel("Number of Shots", fontsize=20)
 
 
-def plot_shots_per_iso_setting(subplot: matplotlib.axes.Axes, data: pd.DataFrame) -> None:
+def plot_shots_per_iso_setting(subplot: Axes, data: pd.DataFrame) -> None:
     """
     Barplot of the number of shots per ISO setting, on the provided subplot. Acts in place.
 
@@ -311,7 +299,7 @@ def plot_shots_per_iso_setting(subplot: matplotlib.axes.Axes, data: pd.DataFrame
 
 
 def plot_insight(
-    data: pd.DataFrame, output_directory: pathlib.Path, showfig: bool = False, savefig: bool = True
+    data: pd.DataFrame, output_directory: pathlib.Path, *, showfig: bool = False, savefig: bool = True
 ) -> None:
     """
     Combines all the different plots into subplots on two figure.
@@ -374,4 +362,5 @@ def plot_insight(
 
 
 if __name__ == "__main__":
-    raise NotImplementedError("This module is meant too be imported")
+    msg = "This module is not meant to be run as a script."
+    raise NotImplementedError(msg)

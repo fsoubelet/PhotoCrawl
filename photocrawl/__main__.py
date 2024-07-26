@@ -3,6 +3,10 @@ Running directly from python module.
 """
 
 import pathlib
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    import pandas as pd
 
 import typer
 
@@ -16,15 +20,16 @@ app = typer.Typer()
 @app.command()
 def crawl(
     images: str = typer.Argument(
-        None, help="Location, relative or absolute, of the images directory you wish to crawl.",
+        None,
+        help="Location, relative or absolute, of the images directory you wish to crawl.",
     ),
     output_dir: str = typer.Option(
         "outputs", help="Location, either relative or absolute, of the output directory."
     ),
-    show_figures: bool = typer.Option(
+    show_figures: bool = typer.Option(  # noqa: FBT001
         False, help="Whether or not to show figures when plotting insights."
     ),
-    save_figures: bool = typer.Option(
+    save_figures: bool = typer.Option(  # noqa: FBT001
         False, help="Whether or not to save figures when plotting insights."
     ),
     log_level: str = typer.Option(

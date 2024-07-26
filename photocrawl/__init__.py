@@ -15,6 +15,6 @@ __url__ = "https://github.com/fsoubelet/PhotoCrawl"
 __version__ = "0.3.2"
 
 
-from .photocrawl import PhotoCrawler
+from .photocrawl import PhotoCrawler  # noqa: TID252
 
 __all__ = ["PhotoCrawler"]
