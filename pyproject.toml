@@ -1,12 +1,26 @@
-[tool.poetry]
-name = "photocrawl"
-version = "0.3.1"
-description = "Analysis script of photography habits."
-authors = ["Felix Soubelet <felix.soubelet@liverpool.ac.uk>"]
-license = "MIT"
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
+[tool.hatch.version]
+path = "photocrawl/__init__.py"
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+  "/.github",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["photocrawl"]
+
+[project]
+name = "photocrawl"
 readme = "README.md"
-repository = "https://github.com/fsoubelet/PhotoCrawl"
+description = "Package for analysis of photography habits."
+authors = [{name = "Felix Soubelet", email = "felix.soubelet@cern.ch"},]
+license = "MIT"
+dynamic = ["version"]
+requires-python = ">=3.9"
 
 keywords = ["Photography", "Utility", "Visualisation"]
 classifiers = [
@@ -15,51 +29,36 @@ classifiers = [
     "Natural Language :: English",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.7",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: Implementation :: CPython",
     "Topic :: Scientific/Engineering :: Visualization",
     "Topic :: Utilities",
 ]
 
-[tool.poetry.dependencies]
-python = "^3.7"
-matplotlib = "^3.2"
-pandas = "^1.0"
-seaborn = "^0.10"
-pyexifinfo = "^0.4"
-loguru = "^0.5"
-Pillow = "^9.1"
-pendulum = "^2.1"
-typer = "^0.3"
+dependencies = [
+    "pandas >= 2.1",
+    "matplotlib >= 3.8",
+    "Pillow >= 10.0",
+    "seaborn >= 0.12",
+    "loguru < 1.0",
+    "typer >= 0.10",
+    "pendulum >= 2.1",
+    "pyexifinfo >= 0.4",
+]
 
-[tool.poetry.dev-dependencies]
-portray = "^1.6"
-mypy = "^1.4"
-typer-cli = "^0.0.11"
 
-[tool.poetry.scripts]
-photocrawl = "photocrawl.__main__:app"
+[project.urls]
+homepage = "https://github.com/fsoubelet/PhotoCrawl"
+repository = "https://github.com/fsoubelet/PhotoCrawl"
+documentation = "https://fsoubelet.github.io/PhotoCrawl/"
 
-[tool.portray]
-docs_dir = "manual_docs"
-extra_dirs = ["example_outputs"]
-extra_markdown_extensions = ["admonition", "codehilite", "footnotes", "pymdownx.arithmatex", "pymdownx.betterem", "pymdownx.caret", "pymdownx.critic", "pymdownx.details", "pymdownx.inlinehilite", "pymdownx.magiclink", "pymdownx.tasklist", "pymdownx.keys", "pymdownx.mark", "pymdownx.smartsymbols", "pymdownx.superfences", "pymdownx.tasklist", "pymdownx.tilde"]
-output_dir = "docs"
-modules = ["photocrawl"]
+[tool.ruff]
+# Generate Python 3.9-compatible code.
+target-version = "py39"
+line-length = 110
 
-[tool.portray.mkdocs]
-repo_url = "https://github.com/fsoubelet/PhotoCrawl"
-repo_name = "Photocrawl"
-edit_uri = "https://github.com/fsoubelet/PhotoCrawl"
-
-[tool.portray.mkdocs.theme]
-name = "material"
-palette = {scheme = "slate", primary = "indico", accent = "pink"}
-font = {text = "roboto", code = "Fira Code"}
-
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.masonry.api"
+# [tool.ruff.lint]
+# ignore = ["T201"]
